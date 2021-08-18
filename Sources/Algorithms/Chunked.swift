@@ -26,9 +26,9 @@ public struct ChunkedByCollection<Base: Collection, Subject> {
   @usableFromInline
   internal let belongInSameGroup: (Subject, Subject) -> Bool
   
-  /// The upper bound of the first chunk.
+  /// The end index of the first chunk.
   @usableFromInline
-  internal var firstUpperBound: Base.Index
+  internal var endOfFirstChunk: Base.Index
   
   @inlinable
   internal init(
@@ -39,10 +39,10 @@ public struct ChunkedByCollection<Base: Collection, Subject> {
     self.base = base
     self.projection = projection
     self.belongInSameGroup = belongInSameGroup
-    self.firstUpperBound = base.startIndex
+    self.endOfFirstChunk = base.startIndex
     
     if !base.isEmpty {
-      firstUpperBound = endOfChunk(startingAt: base.startIndex)
+      endOfFirstChunk = endOfChunk(startingAt: base.startIndex)
     }
   }
 }
@@ -88,7 +88,7 @@ extension ChunkedByCollection: LazyCollectionProtocol {
   
   @inlinable
   public var startIndex: Index {
-    Index(base.startIndex..<firstUpperBound)
+    Index(base.startIndex..<endOfFirstChunk)
   }
   
   @inlinable
@@ -140,29 +140,34 @@ extension ChunkedByCollection: BidirectionalCollection
 }
 
 @available(*, deprecated, renamed: "ChunkedByCollection")
-public typealias LazyChunked<Base: Collection, Subject> = ChunkedByCollection<Base, Subject>
+public typealias LazyChunked<Base: Collection, Subject>
+  = ChunkedByCollection<Base, Subject>
 
 @available(*, deprecated, renamed: "ChunkedByCollection")
-public typealias Chunked<Base: Collection, Subject> = ChunkedByCollection<Base, Subject>
+public typealias Chunked<Base: Collection, Subject>
+  = ChunkedByCollection<Base, Subject>
 
 @available(*, deprecated, renamed: "ChunkedByCollection")
-public typealias ChunkedBy<Base: Collection, Subject> = ChunkedByCollection<Base, Subject>
+public typealias ChunkedBy<Base: Collection, Subject>
+  = ChunkedByCollection<Base, Subject>
 
 /// A collection wrapper that breaks a collection into chunks based on a
 /// predicate.
 ///
 /// Call `lazy.chunked(on:)` on a collection to create an instance of this type.
-public struct ChunkedOnCollection<Base: Collection, Subject> {
+public struct ChunkedOnCollection<Base: Collection, Subject: Equatable> {
   @usableFromInline
   internal var chunked: ChunkedByCollection<Base, Subject>
   
   @inlinable
   internal init(
     base: Base,
-    projection: @escaping (Base.Element) -> Subject,
-    belongInSameGroup: @escaping (Subject, Subject) -> Bool
+    projection: @escaping (Base.Element) -> Subject
   ) {
-    self.chunked = ChunkedByCollection(base: base, projection: projection, belongInSameGroup: belongInSameGroup)
+    self.chunked = ChunkedByCollection(
+      base: base,
+      projection: projection,
+      belongInSameGroup: ==)
   }
 }
 
@@ -222,13 +227,12 @@ extension LazyCollectionProtocol {
   ///
   /// - Complexity: O(*n*), because the start index is pre-computed.
   @inlinable
-  public func chunked<Subject: Equatable>(
+  public func chunked<Subject>(
     on projection: @escaping (Element) -> Subject
   ) -> ChunkedOnCollection<Elements, Subject> {
     ChunkedOnCollection(
       base: elements,
-      projection: projection,
-      belongInSameGroup: ==)
+      projection: projection)
   }
 }
 
@@ -260,7 +264,7 @@ extension Collection {
     }
     
     if start != endIndex {
-      result.append(self[start..<endIndex])
+      result.append(self[start...])
     }
     
     return result
@@ -290,7 +294,7 @@ extension Collection {
     }
     
     if start != endIndex {
-      result.append((subject, self[start..<endIndex]))
+      result.append((subject, self[start...]))
     }
     
     return result
@@ -304,8 +308,9 @@ extension Collection {
 /// A collection that presents the elements of its base collection
 /// in `SubSequence` chunks of any given count.
 ///
-/// A `ChunkedByCount` is a lazy view on the base Collection, but it does not implicitly confer
-/// laziness on algorithms applied to its result.  In other words, for ordinary collections `c`:
+/// A `ChunksOfCountCollection` is a lazy view on the base Collection, but it
+/// does not implicitly confer laziness on algorithms applied to its result.
+/// In other words, for ordinary collections `c`:
 ///
 /// * `c.chunks(ofCount: 3)` does not create new storage
 /// * `c.chunks(ofCount: 3).map(f)` maps eagerly and returns a new array
@@ -321,7 +326,7 @@ public struct ChunksOfCountCollection<Base: Collection> {
   internal let chunkCount: Int
   
   @usableFromInline
-  internal var startUpperBound: Base.Index
+  internal var endOfFirstChunk: Base.Index
 
   ///  Creates a view instance that presents the elements of `base`
   ///  in `SubSequence` chunks of the given count.
@@ -334,7 +339,7 @@ public struct ChunksOfCountCollection<Base: Collection> {
     
     // Compute the start index upfront in order to make
     // start index a O(1) lookup.
-    self.startUpperBound = _base.index(
+    self.endOfFirstChunk = _base.index(
       _base.startIndex, offsetBy: _chunkCount,
       limitedBy: _base.endIndex
     ) ?? _base.endIndex
@@ -355,7 +360,7 @@ extension ChunksOfCountCollection: Collection {
   /// - Complexity: O(1)
   @inlinable
   public var startIndex: Index {
-    Index(_baseRange: base.startIndex..<startUpperBound)
+    Index(_baseRange: base.startIndex..<endOfFirstChunk)
   }
   @inlinable
   public var endIndex: Index {
@@ -365,13 +370,13 @@ extension ChunksOfCountCollection: Collection {
   /// - Complexity: O(1)
   @inlinable
   public subscript(i: Index) -> Element {
-    precondition(i < endIndex, "Index out of range")
+    precondition(i != endIndex, "Index out of range")
     return base[i.baseRange]
   }
   
   @inlinable
   public func index(after i: Index) -> Index {
-    precondition(i < endIndex, "Advancing past end index")
+    precondition(i != endIndex, "Advancing past end index")
     let baseIdx = base.index(
       i.baseRange.upperBound, offsetBy: chunkCount,
       limitedBy: base.endIndex
@@ -399,7 +404,7 @@ extension ChunksOfCountCollection:
 where Base: RandomAccessCollection {
   @inlinable
   public func index(before i: Index) -> Index {
-    precondition(i > startIndex, "Advancing past start index")
+    precondition(i != startIndex, "Advancing past start index")
     
     var offset = chunkCount
     if i.baseRange.lowerBound == base.endIndex {
@@ -561,7 +566,7 @@ extension Collection {
   /// Returns a `ChunkedCollection<Self>` view presenting the elements
   /// in chunks with count of the given count parameter.
   ///
-  /// - Parameter size: The size of the chunks. If the count parameter
+  /// - Parameter count: The size of the chunks. If the count parameter
   ///   is evenly divided by the count of the base `Collection` all the
   ///   chunks will have the count equals to size.
   ///   Otherwise, the last chunk will contain the remaining elements.

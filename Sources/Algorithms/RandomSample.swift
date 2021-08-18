@@ -123,12 +123,12 @@ extension Collection {
     
     // Fill the reservoir with the first `k` elements.
     var i = startIndex
-    while i < endIndex, result.count < k {
+    while i != endIndex, result.count < k {
       result.append(self[i])
       formIndex(after: &i)
     }
     
-    while i < endIndex {
+    while i != endIndex {
       // Calculate the next value of w.
       w *= nextW(k: k, using: &rng)
       
@@ -136,7 +136,7 @@ extension Collection {
       let offset = nextOffset(w: w, using: &rng)
       i = index(i, offsetBy: offset, limitedBy: endIndex) ?? endIndex
       
-      if i < endIndex {
+      if i != endIndex {
         // Swap selected element with a randomly chosen one in the reservoir.
         let j = Int.random(in: 0..<result.count, using: &rng)
         result[j] = self[i]

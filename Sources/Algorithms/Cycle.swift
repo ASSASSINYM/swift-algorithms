@@ -58,7 +58,6 @@ extension CycledSequence: Sequence {
 extension CycledSequence: LazySequenceProtocol
   where Base: LazySequenceProtocol {}
 
-
 /// A collection wrapper that repeats the elements of a base collection for a
 /// finite number of times.
 public struct FiniteCycledCollection<Base: Collection> {
@@ -72,11 +71,7 @@ public struct FiniteCycledCollection<Base: Collection> {
   }
 }
 
-extension FiniteCycledCollection: LazySequenceProtocol, LazyCollectionProtocol
-  where Base: LazyCollectionProtocol {}
-
 extension FiniteCycledCollection: Collection {
-
   public typealias Element = Base.Element
 
   public struct Index: Comparable {
@@ -138,11 +133,11 @@ extension FiniteCycledCollection: Collection {
     offsetBy distance: Int,
     limitedBy limit: Index
   ) -> Index? {
-    guard let productIndex = product.index(i.productIndex,
-                                           offsetBy: distance,
-                                           limitedBy: limit.productIndex) else {
-      return nil
-    }
+    guard let productIndex = product.index(
+      i.productIndex,
+      offsetBy: distance,
+      limitedBy: limit.productIndex)
+    else { return nil }
     return Index(productIndex)
   }
 
@@ -163,6 +158,9 @@ extension FiniteCycledCollection: BidirectionalCollection
 
 extension FiniteCycledCollection: RandomAccessCollection
   where Base: RandomAccessCollection {}
+
+extension FiniteCycledCollection: LazySequenceProtocol, LazyCollectionProtocol
+  where Base: LazyCollectionProtocol {}
 
 //===----------------------------------------------------------------------===//
 // cycled()

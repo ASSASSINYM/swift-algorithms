@@ -83,6 +83,7 @@ extension Product2Sequence: Sequence {
     }
   }
 
+  @inlinable
   public func makeIterator() -> Iterator {
     return Iterator(self)
   }

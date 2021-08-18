@@ -33,6 +33,13 @@ extension InterspersedSequence: Sequence {
   /// The iterator for an `Intersperse` sequence.
   public struct Iterator: IteratorProtocol {
     @usableFromInline
+    internal enum State {
+      case start
+      case element(Base.Element)
+      case separator
+    }
+    
+    @usableFromInline
     internal var iterator: Base.Iterator
     
     @usableFromInline
@@ -45,13 +52,6 @@ extension InterspersedSequence: Sequence {
     internal init(iterator: Base.Iterator, separator: Base.Element) {
       self.iterator = iterator
       self.separator = separator
-    }
-    
-    @usableFromInline
-    enum State {
-      case start
-      case element(Base.Element)
-      case separator
     }
 
     @inlinable
@@ -304,6 +304,13 @@ extension InterspersedMapSequence: Sequence {
   @usableFromInline
   internal struct Iterator: IteratorProtocol {
     @usableFromInline
+    internal enum State {
+      case start
+      case element(Base.Element)
+      case separator(previous: Base.Element)
+    }
+    
+    @usableFromInline
     internal var base: Base.Iterator
     
     @usableFromInline
@@ -324,13 +331,6 @@ extension InterspersedMapSequence: Sequence {
       self.base = base
       self.transform = transform
       self.separator = separator
-    }
-    
-    @usableFromInline
-    internal enum State {
-      case start
-      case element(Base.Element)
-      case separator(previous: Base.Element)
     }
 
     @inlinable
@@ -364,7 +364,7 @@ extension InterspersedMapSequence: Collection where Base: Collection {
   @usableFromInline
   internal struct Index: Comparable {
     @usableFromInline
-    internal enum Representation: Equatable {
+    internal enum Representation {
       case element(Base.Index)
       case separator(previous: Base.Index, next: Base.Index)
     }
@@ -577,8 +577,21 @@ extension InterspersedMapSequence: BidirectionalCollection
   }
 }
 
-extension InterspersedMapSequence.Index.Representation: Hashable
-  where Base.Index: Hashable {}
+extension InterspersedMapSequence.Index: Hashable
+  where Base.Index: Hashable
+{
+  @inlinable
+  internal func hash(into hasher: inout Hasher) {
+    switch representation {
+    case .element(let base):
+      hasher.combine(false)
+      hasher.combine(base)
+    case .separator(_, let next):
+      hasher.combine(true)
+      hasher.combine(next)
+    }
+  }
+}
 
 extension InterspersedMapSequence: LazySequenceProtocol
   where Base: LazySequenceProtocol {}
@@ -590,7 +603,6 @@ extension InterspersedMapSequence: LazyCollectionProtocol
 //===----------------------------------------------------------------------===//
 
 extension Sequence {
-
   /// Returns a sequence containing elements of this sequence with the given
   /// separator inserted in between each element.
   ///

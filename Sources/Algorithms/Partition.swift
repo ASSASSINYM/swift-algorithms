@@ -25,7 +25,7 @@ extension MutableCollection {
   internal mutating func stablePartition(
     count n: Int,
     subrange: Range<Index>,
-    by belongsInSecondPartition: (Element) throws-> Bool
+    by belongsInSecondPartition: (Element) throws -> Bool
   ) rethrows -> Index {
     if n == 0 { return subrange.lowerBound }
     if n == 1 {
@@ -138,22 +138,22 @@ extension MutableCollection where Self: BidirectionalCollection {
     // * predicate(self[i]) == true, for i in hi ..< endIndex
 
     Loop: while true {
-      FindLo: repeat {
+      FindLo: do {
         while lo < hi {
           if try belongsInSecondPartition(self[lo]) { break FindLo }
           formIndex(after: &lo)
         }
         break Loop
-      } while false
+      }
 
-      FindHi: repeat {
+      FindHi: do {
         formIndex(before: &hi)
         while lo < hi {
           if try !belongsInSecondPartition(self[hi]) { break FindHi }
           formIndex(before: &hi)
         }
         break Loop
-      } while false
+      }
 
       swapAt(lo, hi)
       formIndex(after: &lo)

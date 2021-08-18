@@ -475,7 +475,7 @@ extension SplitCollection: LazyCollectionProtocol {
     }
 
     var updatedSplitCount = splitCount
-    if end < base.endIndex {
+    if end != base.endIndex {
       // This subsequence ends on a separator (and perhaps includes other
       // separators, if we're omitting empty subsequences), so we've performed
       // another split.

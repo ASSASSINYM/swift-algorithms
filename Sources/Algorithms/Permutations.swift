@@ -496,7 +496,8 @@ extension UniquePermutationsSequence: Sequence {
   }
 }
 
-extension UniquePermutationsSequence: LazySequenceProtocol where Base: LazySequenceProtocol {}
+extension UniquePermutationsSequence: LazySequenceProtocol
+  where Base: LazySequenceProtocol {}
 
 extension Collection where Element: Hashable {
   /// Returns a sequence of the unique permutations of this sequence of the

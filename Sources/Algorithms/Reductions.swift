@@ -12,7 +12,6 @@
 // MARK: - Exclusive Reductions
 
 extension LazySequenceProtocol {
-
   /// Returns a sequence containing the accumulated results of combining the
   /// elements of the sequence using the given closure.
   ///
@@ -75,7 +74,6 @@ extension LazySequenceProtocol {
 }
 
 extension Sequence {
-
   /// Returns an array containing the accumulated results of combining the
   /// elements of the sequence using the given closure.
   ///
@@ -234,9 +232,10 @@ extension ExclusiveReductionsSequence: Sequence {
 
   @inlinable
   public func makeIterator() -> Iterator {
-    Iterator(iterator: base.makeIterator(),
-             current: initial,
-             transform: transform)
+    Iterator(
+      iterator: base.makeIterator(),
+      current: initial,
+      transform: transform)
   }
 }
 
@@ -325,7 +324,6 @@ extension ExclusiveReductionsSequence: LazyCollectionProtocol
 // MARK: - Inclusive Reductions
 
 extension LazySequenceProtocol {
-
   /// Returns a sequence containing the accumulated results of combining the
   /// elements of the sequence using the given closure.
   ///
@@ -354,7 +352,6 @@ extension LazySequenceProtocol {
 }
 
 extension Sequence {
-
   /// Returns an array containing the accumulated results of combining the
   /// elements of the sequence using the given closure.
   ///
@@ -579,7 +576,6 @@ extension ReductionsIndexRepresentation: Comparable {
 // MARK: - Scan
 
 extension LazySequenceProtocol {
-
   @available(*, deprecated, message: "Use reductions(_:_:) instead.")
   @inlinable
   public func scan<Result>(
@@ -600,7 +596,6 @@ extension LazySequenceProtocol {
 }
 
 extension Sequence {
-
   @available(*, deprecated, message: "Use reductions(_:_:) instead.")
   @inlinable
   public func scan<Result>(
@@ -621,7 +616,6 @@ extension Sequence {
 }
 
 extension LazySequenceProtocol {
-
   @available(*, deprecated, message: "Use reductions(_:) instead.")
   @inlinable
   public func scan(
@@ -632,7 +626,6 @@ extension LazySequenceProtocol {
 }
 
 extension Sequence {
-
   @available(*, deprecated, message: "Use reductions(_:) instead.")
   @inlinable
   public func scan(

@@ -38,9 +38,8 @@ protocol design makes infinitely large types impossible/impractical.
 conforms.
 
 The `FiniteCycledCollection` type always has `Collection` conformance, with
-`BidirectionalCollection` conformance when called on a bidirectional collection.
-`FiniteCycledCollection` also conforms to `LazyCollectionProtocol` when the base
-type conforms.
+`BidirectionalCollection`, `RandomAccessCollection`, and `LazySequenceProtocol` 
+conformance when the base type conforms.
 
 ### Complexity
 

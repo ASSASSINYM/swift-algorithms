@@ -64,7 +64,7 @@ extension Chain2Sequence: Collection where Base1: Collection, Base2: Collection 
     // from the penultimate index of the first collection to the start of the
     // second.
     @usableFromInline
-    internal enum Representation : Equatable {
+    internal enum Representation: Equatable {
       case first(Base1.Index)
       case second(Base2.Index)
     }

@@ -120,8 +120,9 @@ Since both result types need to store an array of the collection’s
 indices and mutate the array to generate each permutation, they only
 have `Sequence` conformance. Adding `Collection` conformance would require
 storing the array in the index type, which would in turn lead to copying the
-array at every index advancement. The `PermutationsSequence` type
-conforms to `LazySequenceProtocol` when its base type conforms.
+array at every index advancement. The `PermutationsSequence` and
+`UniquePermutationsSequence` types conforms to `LazySequenceProtocol` when their
+base type conforms.
 
 ### Complexity
 
