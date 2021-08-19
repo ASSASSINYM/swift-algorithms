@@ -62,8 +62,7 @@ extension Collection {
   /// This method is equivalent to calling `randomStableSample(k:using:)`,
   /// passing in the system's default random generator.
   ///
-  /// - Parameters:
-  ///   - k: The number of elements to randomly select.
+  /// - Parameter k: The number of elements to randomly select.
   /// - Returns: An array of `k` random elements. If `k` is greater than this
   ///   collection's count, then this method returns the full collection.
   ///
@@ -154,8 +153,7 @@ extension Collection {
   /// This method is equivalent to calling `randomSample(k:using:)`, passing in
   /// the system's default random generator.
   ///
-  /// - Parameters:
-  ///   - k: The number of elements to randomly select.
+  /// - Parameter k: The number of elements to randomly select.
   /// - Returns: An array of `k` random elements. The returned elements may be
   ///   in any order. If `k` is greater than this collection's count, then this
   ///   method returns the full collection.
@@ -225,8 +223,7 @@ extension Sequence {
   /// This method is equivalent to calling `randomSample(k:using:)`, passing in
   /// the system's default random generator.
   ///
-  /// - Parameters:
-  ///   - k: The number of elements to randomly select.
+  /// - Parameter k: The number of elements to randomly select.
   /// - Returns: An array of `k` random elements. The returned elements may be
   ///   in any order. If `k` is greater than this sequence's count, then this
   ///   method returns the full sequence.

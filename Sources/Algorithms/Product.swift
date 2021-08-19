@@ -440,7 +440,8 @@ extension Product2Sequence: BidirectionalCollection
 extension Product2Sequence: RandomAccessCollection
   where Base1: RandomAccessCollection, Base2: RandomAccessCollection {}
 
-extension Product2Sequence.Index: Hashable where Base1.Index: Hashable, Base2.Index: Hashable {}
+extension Product2Sequence.Index: Hashable
+  where Base1.Index: Hashable, Base2.Index: Hashable {}
 
 //===----------------------------------------------------------------------===//
 // product(_:_:)

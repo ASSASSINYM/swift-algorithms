@@ -243,8 +243,8 @@ extension LazySequenceProtocol where Self: Collection, Elements: Collection {
 //===----------------------------------------------------------------------===//
 
 extension Collection {
-  /// Returns a collection of subsequences of this collection, chunked by
-  /// the given predicate.
+  /// Returns a collection of subsequences of this collection, chunked by the
+  /// given predicate.
   ///
   /// - Complexity: O(*n*), where *n* is the length of this collection.
   @inlinable
@@ -307,16 +307,17 @@ extension Collection {
 // chunks(ofCount:)
 //===----------------------------------------------------------------------===//
 
-/// A collection that presents the elements of its base collection
-/// in `SubSequence` chunks of any given count.
+/// A collection that presents the elements of its base collection in
+/// `SubSequence` chunks of any given count.
 ///
 /// A `ChunksOfCountCollection` is a lazy view on the base Collection, but it
-/// does not implicitly confer laziness on algorithms applied to its result.
-/// In other words, for ordinary collections `c`:
+/// does not implicitly confer laziness on algorithms applied to its result. In
+/// other words, for ordinary collections `c`:
 ///
 /// * `c.chunks(ofCount: 3)` does not create new storage
 /// * `c.chunks(ofCount: 3).map(f)` maps eagerly and returns a new array
-/// * `c.lazy.chunks(ofCount: 3).map(f)` maps lazily and returns a `LazyMapCollection`
+/// * `c.lazy.chunks(ofCount: 3).map(f)` maps lazily and returns a
+///   `LazyMapCollection`
 public struct ChunksOfCountCollection<Base: Collection> {
   
   public typealias Element = Base.SubSequence
@@ -330,8 +331,8 @@ public struct ChunksOfCountCollection<Base: Collection> {
   @usableFromInline
   internal var endOfFirstChunk: Base.Index
 
-  ///  Creates a view instance that presents the elements of `base`
-  ///  in `SubSequence` chunks of the given count.
+  ///  Creates a view instance that presents the elements of `base` in
+  ///  `SubSequence` chunks of the given count.
   ///
   /// - Complexity: O(*n*), because the start index is pre-computed.
   @inlinable
@@ -339,8 +340,8 @@ public struct ChunksOfCountCollection<Base: Collection> {
     self.base = _base
     self.chunkCount = _chunkCount
     
-    // Compute the start index upfront in order to make
-    // start index a O(1) lookup.
+    // Compute the start index upfront in order to make start index a O(1)
+    // lookup.
     self.endOfFirstChunk = _base.index(
       _base.startIndex, offsetBy: _chunkCount,
       limitedBy: _base.endIndex
@@ -495,9 +496,9 @@ extension ChunksOfCountCollection {
       let remainder = base.count%chunkCount
       // We have to take it into account when calculating offsets.
       if remainder != 0 {
-        // Distance "minus" one(at this point distance is negative)
-        // because we need to adjust for the last position that have
-        // a variadic(remainder) number of elements.
+        // Distance "minus" one(at this point distance is negative) because we
+        // need to adjust for the last position that have a variadic(remainder)
+        // number of elements.
         return ((distance + 1) * chunkCount) - remainder
       }
     }
@@ -531,14 +532,13 @@ extension ChunksOfCountCollection {
     
     if let limit = limit {
       if baseIdx == nil {
-        // If we past the bounds while advancing forward and the
-        // limit is the `endIndex`, since the computation on base
-        // don't take into account the remainder, we have to make
-        // sure that passing the bound was because of the distance
-        // not just because of a remainder. Special casing is less
-        // expensive than always use count(which could be O(n) for
-        // non-random access collection base) to compute the base
-        // distance taking remainder into account.
+        // If we past the bounds while advancing forward and the limit is the
+        // `endIndex`, since the computation on base don't take into account the
+        // remainder, we have to make sure that passing the bound was because of
+        // the distance not just because of a remainder. Special casing is less
+        // expensive than always use count(which could be O(n) for non-random
+        // access collection base) to compute the base distance taking remainder
+        // into account.
         if baseDistance > 0 && limit == endIndex {
           if self.distance(from: i, to: limit) < distance {
             return nil
@@ -565,13 +565,13 @@ extension ChunksOfCountCollection {
 }
 
 extension Collection {
-  /// Returns a `ChunksOfCountCollection<Self>` view presenting the elements
-  /// in chunks with count of the given count parameter.
+  /// Returns a `ChunksOfCountCollection<Self>` view presenting the elements in
+  /// chunks with count of the given count parameter.
   ///
-  /// - Parameter count: The size of the chunks. If the count parameter
-  ///   is evenly divided by the count of the base `Collection` all the
-  ///   chunks will have the count equals to size.
-  ///   Otherwise, the last chunk will contain the remaining elements.
+  /// - Parameter count: The size of the chunks. If the count parameter is
+  ///   evenly divided by the count of the base `Collection` all the chunks will
+  ///   have the count equals to size. Otherwise, the last chunk will contain
+  ///   the remaining elements.
   ///
   ///     let c = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   ///     print(c.chunks(ofCount: 5).map(Array.init))

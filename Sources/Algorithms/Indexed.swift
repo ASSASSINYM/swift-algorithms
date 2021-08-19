@@ -52,7 +52,11 @@ extension IndexedCollection: Collection {
   }
   
   @inlinable
-  public func index(_ i: Base.Index, offsetBy distance: Int, limitedBy limit: Base.Index) -> Base.Index? {
+  public func index(
+    _ i: Base.Index,
+    offsetBy distance: Int,
+    limitedBy limit: Base.Index
+  ) -> Base.Index? {
     base.index(i, offsetBy: distance, limitedBy: limit)
   }
   
@@ -62,16 +66,23 @@ extension IndexedCollection: Collection {
   }
 }
 
-extension IndexedCollection: BidirectionalCollection where Base: BidirectionalCollection {
+extension IndexedCollection: BidirectionalCollection
+  where Base: BidirectionalCollection
+{
   @inlinable
   public func index(before i: Base.Index) -> Base.Index {
     base.index(before: i)
   }
 }
 
-extension IndexedCollection: RandomAccessCollection where Base: RandomAccessCollection {}
-extension IndexedCollection: LazySequenceProtocol where Base: LazySequenceProtocol {}
-extension IndexedCollection: LazyCollectionProtocol where Base: LazySequenceProtocol {}
+extension IndexedCollection: RandomAccessCollection
+  where Base: RandomAccessCollection {}
+
+extension IndexedCollection: LazySequenceProtocol
+  where Base: LazySequenceProtocol {}
+
+extension IndexedCollection: LazyCollectionProtocol
+  where Base: LazySequenceProtocol {}
 
 //===----------------------------------------------------------------------===//
 // indexed()

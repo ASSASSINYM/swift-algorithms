@@ -392,9 +392,8 @@ extension Sequence {
   /// Returns both the minimum and maximum elements in the sequence, using the
   /// given predicate as the comparison between elements.
   ///
-  /// The predicate must be a *strict weak ordering* over the elements. That
-  /// is, for any elements `a`, `b`, and `c`, the following conditions must
-  /// hold:
+  /// The predicate must be a *strict weak ordering* over the elements. That is,
+  /// for any elements `a`, `b`, and `c`, the following conditions must hold:
   ///
   /// - `areInIncreasingOrder(a, a)` is always `false`. (Irreflexivity)
   /// - If `areInIncreasingOrder(a, b)` and `areInIncreasingOrder(b, c)` are
@@ -405,9 +404,9 @@ extension Sequence {
   ///   and `c` are incomparable, then `a` and `c` are also incomparable.
   ///   (Transitive incomparability)
   ///
-  /// This example shows how to use the `minAndMax(by:)` method on a
-  /// dictionary to find the key-value pair with the lowest value and the pair
-  /// with the highest value.
+  /// This example shows how to use the `minAndMax(by:)` method on a dictionary
+  /// to find the key-value pair with the lowest value and the pair with the
+  /// highest value.
   ///
   ///     let hues = ["Heliotrope": 296, "Coral": 16, "Aquamarine": 156]
   ///     if let extremeHues = hues.minAndMax(by: {$0.value < $1.value}) {
@@ -419,9 +418,9 @@ extension Sequence {
   ///
   /// - Precondition: The sequence is finite.
   ///
-  /// - Parameter areInIncreasingOrder: A predicate that returns `true`
-  ///   if its first argument should be ordered before its second
-  ///   argument; otherwise, `false`.
+  /// - Parameter areInIncreasingOrder: A predicate that returns `true` if its
+  ///   first argument should be ordered before its second argument; otherwise,
+  ///   `false`.
   /// - Returns: A tuple with the sequence's minimum element, followed by its
   ///   maximum element. If the sequence provides multiple qualifying minimum
   ///   elements, the first equivalent element is returned; of multiple maximum

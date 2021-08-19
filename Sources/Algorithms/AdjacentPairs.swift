@@ -14,9 +14,8 @@ extension Sequence {
   ///
   /// In the `AdjacentPairsSequence` returned by this method, the elements of
   /// the *i*th pair are the *i*th and *(i+1)*th elements of the underlying
-  /// sequence.
-  /// The following example uses the `adjacentPairs()` method to iterate over
-  /// adjacent pairs of integers:
+  /// sequence. The following example uses the `adjacentPairs()` method to
+  /// iterate over adjacent pairs of integers:
   ///
   ///     for pair in (1...).prefix(5).adjacentPairs() {
   ///         print(pair)

@@ -13,8 +13,8 @@
 // Intersperse
 //===----------------------------------------------------------------------===//
 
-/// A sequence that presents the elements of a base sequence of elements
-/// with a separator between each of those elements.
+/// A sequence that presents the elements of a base sequence of elements with a
+/// separator between each of those elements.
 public struct InterspersedSequence<Base: Sequence> {
   @usableFromInline
   internal let base: Base

@@ -18,9 +18,9 @@ extension MutableCollection
 {
   /// Permutes this collection's elements through all the lexical orderings.
   ///
-  /// Call `nextPermutation()` repeatedly starting with the collection in
-  /// sorted order. When the full cycle of all permutations has been completed,
-  /// the collection will be back in sorted order and this method will return
+  /// Call `nextPermutation()` repeatedly starting with the collection in sorted
+  /// order. When the full cycle of all permutations has been completed, the
+  /// collection will be back in sorted order and this method will return
   /// `false`.
   ///
   /// - Returns: A Boolean value indicating whether the collection still has

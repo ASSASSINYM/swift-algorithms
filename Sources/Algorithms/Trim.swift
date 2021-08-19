@@ -13,18 +13,17 @@
 //===----------------------------------------------------------------------===//
 
 extension Collection {
-  /// Returns a `SubSequence` formed by discarding all elements at the start
-  /// of the collection which satisfy the given predicate.
+  /// Returns a `SubSequence` formed by discarding all elements at the start of
+  /// the collection which satisfy the given predicate.
   ///
-  /// This example uses `trimmingPrefix(while:)` to get a substring without the white
-  /// space at the beginning of the string:
+  /// This example uses `trimmingPrefix(while:)` to get a substring without the
+  /// white space at the beginning of the string:
   ///
   ///     let myString = "  hello, world  "
   ///     print(myString.trimmingPrefix(while: \.isWhitespace)) // "hello, world  "
   ///
-  /// - Parameters:
-  ///    - predicate: A closure which determines if the element should be
-  ///                 omitted from the resulting slice.
+  /// - Parameter predicate: A closure which determines if the element should be
+  ///   omitted from the resulting slice.
   ///
   /// - Complexity: O(*n*), where *n* is the length of this collection.
   ///
@@ -42,19 +41,18 @@ extension Collection {
 //===----------------------------------------------------------------------===//
 
 extension Collection where Self: RangeReplaceableCollection {
-  /// Mutates a `Collection` by discarding all elements at the start
-  /// of it which satisfy the given predicate.
+  /// Mutates a `Collection` by discarding all elements at the start of it which
+  /// satisfy the given predicate.
   ///
-  /// This example uses `trimPrefix(while:)` to remove the white
-  /// space at the beginning of the string:
+  /// This example uses `trimPrefix(while:)` to remove the white space at the
+  /// beginning of the string:
   ///
   ///     let myString = "  hello, world  "
   ///     myString.trimPrefix(while: \.isWhitespace)
   ///     print(myString) // "hello, world  "
   ///
-  /// - Parameters:
-  ///    - predicate: A closure which determines if the element should be
-  ///                 removed from the string.
+  /// - Parameter predicate: A closure which determines if the element should be
+  ///   removed from the string.
   ///
   /// - Complexity: O(*n*), where *n* is the length of this collection.
   ///
@@ -69,19 +67,18 @@ extension Collection where Self: RangeReplaceableCollection {
 }
 
 extension Collection where Self == Self.SubSequence {
-  /// Mutates a `Collection` by discarding all elements at the start
-  /// of it which satisfy the given predicate.
+  /// Mutates a `Collection` by discarding all elements at the start of it which
+  /// satisfy the given predicate.
   ///
-  /// This example uses `trimPrefix(while:)` to remove the white
-  /// space at the beginning of the string:
+  /// This example uses `trimPrefix(while:)` to remove the white space at the
+  /// beginning of the string:
   ///
   ///     let myString = "  hello, world  "
   ///     myString.trimPrefix(while: \.isWhitespace)
   ///     print(myString) // "hello, world  "
   ///
-  /// - Parameters:
-  ///    - predicate: A closure which determines if the element should be
-  ///                 removed from the string.
+  /// - Parameters predicate: A closure which determines if the element should
+  ///   be removed from the string.
   ///
   /// - Complexity: O(*n*), where *n* is the length of this collection.
   ///
@@ -107,9 +104,8 @@ extension BidirectionalCollection {
   ///     let myString = "  hello, world  "
   ///     print(myString.trimming(while: \.isWhitespace)) // "hello, world"
   ///
-  /// - Parameters:
-  ///    - predicate: A closure which determines if the element should be
-  ///                 omitted from the resulting slice.
+  /// - Parameter predicate: A closure which determines if the element should be
+  ///   omitted from the resulting slice.
   ///
   /// - Complexity: O(*n*), where *n* is the length of this collection.
   ///
@@ -120,18 +116,17 @@ extension BidirectionalCollection {
     return try trimmingPrefix(while: predicate).trimmingSuffix(while: predicate)
   }
   
-  /// Returns a `SubSequence` formed by discarding all elements at the end
-  /// of the collection which satisfy the given predicate.
+  /// Returns a `SubSequence` formed by discarding all elements at the end of
+  /// the collection which satisfy the given predicate.
   ///
-  /// This example uses `trimmingSuffix(while:)` to get a substring without the white
-  /// space at the end of the string:
+  /// This example uses `trimmingSuffix(while:)` to get a substring without the
+  /// white space at the end of the string:
   ///
   ///     let myString = "  hello, world  "
   ///     print(myString.trimmingSuffix(while: \.isWhitespace)) // "  hello, world"
   ///
-  /// - Parameters:
-  ///    - predicate: A closure which determines if the element should be
-  ///                 omitted from the resulting slice.
+  /// - Parameter predicate: A closure which determines if the element should be
+  ///   omitted from the resulting slice.
   ///
   /// - Complexity: O(*n*), where *n* is the length of this collection.
   ///
@@ -149,19 +144,18 @@ extension BidirectionalCollection {
 //===----------------------------------------------------------------------===//
 
 extension BidirectionalCollection where Self: RangeReplaceableCollection {
-  /// Mutates a `BidirectionalCollection` by discarding all elements at the start
-  /// and at the end of it which satisfy the given predicate.
+  /// Mutates a `BidirectionalCollection` by discarding all elements at the
+  /// start and at the end of it which satisfy the given predicate.
   ///
-  /// This example uses `trim(while:)` to remove the white
-  /// space at the beginning of the string:
+  /// This example uses `trim(while:)` to remove the white space at the
+  /// beginning of the string:
   ///
   ///     let myString = "  hello, world  "
   ///     myString.trim(while: \.isWhitespace)
   ///     print(myString) // "hello, world"
   ///
-  /// - Parameters:
-  ///    - predicate: A closure which determines if the element should be
-  ///                 removed from the string.
+  /// - Parameter predicate: A closure which determines if the element should be
+  ///   removed from the string.
   ///
   /// - Complexity: O(*n*), where *n* is the length of this collection.
   ///
@@ -177,16 +171,15 @@ extension BidirectionalCollection where Self: RangeReplaceableCollection {
   /// Mutates a `BidirectionalCollection` by discarding all elements at the end
   /// of it which satisfy the given predicate.
   ///
-  /// This example uses `trimSuffix(while:)` to remove the white
-  /// space at the beginning of the string:
+  /// This example uses `trimSuffix(while:)` to remove the white space at the
+  /// beginning of the string:
   ///
   ///     let myString = "  hello, world  "
   ///     myString.trimSuffix(while: \.isWhitespace)
   ///     print(myString) // "  hello, world"
   ///
-  /// - Parameters:
-  ///    - predicate: A closure which determines if the element should be
-  ///                 removed from the string.
+  /// - Parameter predicate: A closure which determines if the element should be
+  ///   removed from the string.
   ///
   /// - Complexity: O(*n*), where *n* is the length of this collection.
   ///
@@ -201,19 +194,18 @@ extension BidirectionalCollection where Self: RangeReplaceableCollection {
 }
 
 extension BidirectionalCollection where Self == Self.SubSequence {
-  /// Mutates a `BidirectionalCollection` by discarding all elements at the start
-  /// and at the end of it which satisfy the given predicate.
+  /// Mutates a `BidirectionalCollection` by discarding all elements at the
+  /// start and at the end of it which satisfy the given predicate.
   ///
-  /// This example uses `trim(while:)` to remove the white
-  /// space at the beginning of the string:
+  /// This example uses `trim(while:)` to remove the white space at the
+  /// beginning of the string:
   ///
   ///     let myString = "  hello, world  "
   ///     myString.trim(while: \.isWhitespace)
   ///     print(myString) // "hello, world"
   ///
-  /// - Parameters:
-  ///    - predicate: A closure which determines if the element should be
-  ///                 removed from the string.
+  /// - Parameter predicate: A closure which determines if the element should be
+  ///   removed from the string.
   ///
   /// - Complexity: O(*n*), where *n* is the length of this collection.
   ///
@@ -227,16 +219,15 @@ extension BidirectionalCollection where Self == Self.SubSequence {
   /// Mutates a `BidirectionalCollection` by discarding all elements at the end
   /// of it which satisfy the given predicate.
   ///
-  /// This example uses `trimSuffix(while:)` to remove the white
-  /// space at the beginning of the string:
+  /// This example uses `trimSuffix(while:)` to remove the white space at the
+  /// beginning of the string:
   ///
   ///     let myString = "  hello, world  "
   ///     myString.trimSuffix(while: \.isWhitespace)
   ///     print(myString) // "  hello, world"
   ///
-  /// - Parameters:
-  ///    - predicate: A closure which determines if the element should be
-  ///                 removed from the string.
+  /// - Parameter predicate: A closure which determines if the element should be
+  ///   removed from the string.
   ///
   /// - Complexity: O(*n*), where *n* is the length of this collection.
   ///

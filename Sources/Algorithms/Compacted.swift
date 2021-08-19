@@ -48,9 +48,10 @@ public struct CompactedSequence<Base: Sequence, Element>: Sequence
 }
 
 extension Sequence {
-  /// Returns a new `Sequence` that iterates over every non-nil element
-  /// from the original `Sequence`.
-  /// It produces the same result as `c.compactMap { $0 }`.
+  /// Returns a new `Sequence` that iterates over every non-nil element from the
+  /// original `Sequence`.
+  ///
+  /// Produces the same result as `c.compactMap { $0 }`.
   ///
   ///     let c = [1, nil, 2, 3, nil]
   ///     for num in c.compacted() {
@@ -145,9 +146,10 @@ extension CompactedCollection.Index: Hashable
   where Base.Index: Hashable {}
 
 extension Collection {
-  /// Returns a new `Collection` that iterates over every non-nil element
-  /// from the original `Collection`.
-  /// It produces the same result as `c.compactMap { $0 }`.
+  /// Returns a new `Collection` that iterates over every non-nil element from
+  /// the original `Collection`.
+  ///
+  /// Produces the same result as `c.compactMap { $0 }`.
   ///
   ///     let c = [1, nil, 2, 3, nil]
   ///     for num in c.compacted() {

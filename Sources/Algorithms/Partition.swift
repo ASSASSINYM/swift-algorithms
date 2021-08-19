@@ -14,9 +14,9 @@
 //===----------------------------------------------------------------------===//
 
 extension MutableCollection {
-  /// Moves all elements satisfying `belongsInSecondPartition` into a suffix
-  /// of the collection, preserving their relative order, and returns the
-  /// start of the resulting suffix.
+  /// Moves all elements satisfying `belongsInSecondPartition` into a suffix of
+  /// the collection, preserving their relative order, and returns the start of
+  /// the resulting suffix.
   ///
   /// - Complexity: O(*n* log *n*), where *n* is the number of elements.
   /// - Precondition:
@@ -173,8 +173,8 @@ extension Collection {
   ///
   /// The collection must already be partitioned according to the predicate.
   /// That is, there should be an index `i` where for every element in
-  /// `collection[..<i]` the predicate is `false`, and for every element
-  /// in `collection[i...]` the predicate is `true`.
+  /// `collection[..<i]` the predicate is `false`, and for every element in
+  /// `collection[i...]` the predicate is `true`.
   ///
   /// - Parameter belongsInSecondPartition: A predicate that partitions the
   ///   collection.

@@ -364,9 +364,8 @@ extension LazySequenceProtocol {
   /// // prints [1, 3, 6, 10]
   /// ```
   ///
-  /// - Parameters:
-  ///   - transform: A closure that combines the previously reduced result and
-  ///   the next element in the receiving sequence.
+  /// - Parameter transform: A closure that combines the previously reduced
+  ///   result and the next element in the receiving sequence.
   /// - Returns: A sequence of the reduced elements.
   ///
   /// - Complexity: O(1)
@@ -408,9 +407,8 @@ extension Sequence {
   ///   If the sequence has one element, `transform` is never executed and
   ///   an array containing only that first element is returned.
   ///
-  /// - Parameters:
-  ///   - transform: A closure that combines the previously reduced result and
-  ///   the next element in the receiving sequence.
+  /// - Parameter transform: A closure that combines the previously reduced
+  ///   result and the next element in the receiving sequence.
   /// - Returns: An array of the reduced elements.
   ///
   /// - Complexity: O(_n_), where _n_ is the length of the sequence.
