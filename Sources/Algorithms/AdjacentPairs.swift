@@ -69,7 +69,8 @@ public struct AdjacentPairsSequence<Base: Sequence> {
 }
 
 extension AdjacentPairsSequence {
-  /// The iterator for an `AdjacentPairsSequence` or `AdjacentPairsCollection`.
+  /// The iterator for an `AdjacentPairsSequence` or `AdjacentPairsCollection`
+  /// instance.
   public struct Iterator {
     @usableFromInline
     internal var base: Base.Iterator
@@ -163,7 +164,7 @@ extension AdjacentPairsCollection {
 }
 
 extension AdjacentPairsCollection {
-  /// A position in an `AdjacentPairsCollection`.
+  /// A position in an `AdjacentPairsCollection` instance.
   public struct Index: Comparable {
     @usableFromInline
     internal var first: Base.Index

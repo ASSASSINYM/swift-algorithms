@@ -85,12 +85,15 @@ public struct PermutationsSequence<Base: Collection> {
   internal let baseCount: Int
   
   /// The range of accepted sizes of permutations.
+  ///
   /// - Note: This may be empty if the attempted range entirely exceeds the
   /// bounds of the size of the `base` collection.
   @usableFromInline
   internal let kRange: Range<Int>
   
-  /// Initializes a `Permutations` for all permutations of `base` of size `k`.
+  /// Initializes a `PermutationsSequence` for all permutations of `base` of
+  /// size `k`.
+  ///
   /// - Parameters:
   ///   - base: The collection to iterate over for permutations
   ///   - k: The expected size of each permutation, or `nil` (default) to
@@ -106,8 +109,9 @@ public struct PermutationsSequence<Base: Collection> {
     self.init(base, kRange: kRange)
   }
   
-  /// Initializes a `Permutations` for all combinations of `base` of sizes
-  /// within a given range.
+  /// Initializes a `PermutationsSequence` for all combinations of `base` of
+  /// sizes within a given range.
+  ///
   /// - Parameters:
   ///   - base: The collection to iterate over for permutations.
   ///   - kRange: The range of accepted sizes of permutations, or `nil` to
@@ -135,7 +139,7 @@ public struct PermutationsSequence<Base: Collection> {
 }
 
 extension PermutationsSequence: Sequence {
-  /// The iterator for a `Permutations` instance.
+  /// The iterator for a `PermutationsSequence` instance.
   public struct Iterator: IteratorProtocol {
     @usableFromInline
     internal let base: Base
@@ -320,8 +324,8 @@ extension Collection {
   ///   results in an empty sequence.
   ///
   /// - Complexity: O(1) for random-access base collections. O(*n*) where *n*
-  ///   is the number of elements in the base collection, since `Permutations`
-  ///   accesses the `count` of the base collection.
+  ///   is the number of elements in the base collection, since
+  ///   `PermutationsSequence` accesses the `count` of the base collection.
   @inlinable
   public func permutations<R: RangeExpression>(
     ofCount kRange: R
@@ -376,8 +380,8 @@ extension Collection {
   ///   this collection, the resulting sequence is empty.
   ///
   /// - Complexity: O(1) for random-access base collections. O(*n*) where *n*
-  ///   is the number of elements in the base collection, since `Permutations`
-  ///   accesses the `count` of the base collection.
+  ///   is the number of elements in the base collection, since
+  ///   `PermutationsSequence` accesses the `count` of the base collection.
   @inlinable
   public func permutations(ofCount k: Int? = nil) -> PermutationsSequence<Self> {
     precondition(
@@ -394,7 +398,7 @@ extension Collection {
 /// A sequence of the unique permutations of the elements of a sequence or
 /// collection.
 ///
-/// To create a `UniquePermutations` instance, call one of the
+/// To create a `UniquePermutationsSequence` instance, call one of the
 /// `uniquePermutations` methods on your collection.
 public struct UniquePermutationsSequence<Base: Collection> {
   /// The base collection to iterate over for permutations.
@@ -441,7 +445,7 @@ extension UniquePermutationsSequence where Base.Element: Hashable {
 }
 
 extension UniquePermutationsSequence: Sequence {
-  /// The iterator for a `UniquePermutations` instance.
+  /// The iterator for a `UniquePermutationsSequence` instance.
   public struct Iterator: IteratorProtocol {
     @usableFromInline
     internal let base: Base

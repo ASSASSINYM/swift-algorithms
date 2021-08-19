@@ -30,7 +30,7 @@ public struct InterspersedSequence<Base: Sequence> {
 }
 
 extension InterspersedSequence: Sequence {
-  /// The iterator for an `Intersperse` sequence.
+  /// The iterator for an `InterspersedSequence` sequence.
   public struct Iterator: IteratorProtocol {
     @usableFromInline
     internal enum State {
@@ -82,7 +82,7 @@ extension InterspersedSequence: Sequence {
 }
 
 extension InterspersedSequence: Collection where Base: Collection {
-  /// A position in an `Intersperse` collection.
+  /// A position in an `InterspersedSequence` instance.
   public struct Index: Comparable {
     @usableFromInline
     internal enum Representation: Equatable {

@@ -70,8 +70,7 @@ public struct StridingSequence<Base: Sequence>: Sequence {
 }
 
 extension StridingSequence {
-  
-  /// An iterator over a `Stride` sequence.
+  /// An iterator over a `StridingSequence` instance.
   public struct Iterator: IteratorProtocol {
     @usableFromInline
     internal var iterator: Base.Iterator
@@ -138,8 +137,7 @@ extension StridingCollection {
 }
 
 extension StridingCollection: Collection {
-  
-  /// A position in a `Stride` collection.
+  /// A position in a `StridingCollection` instance.
   public struct Index: Comparable {
     @usableFromInline
     internal let base: Base.Index
@@ -274,5 +272,6 @@ extension StridingCollection: BidirectionalCollection
   }
 }
 
-extension StridingCollection: RandomAccessCollection where Base: RandomAccessCollection {}
+extension StridingCollection: RandomAccessCollection
+  where Base: RandomAccessCollection {}
 extension StridingCollection.Index: Hashable where Base.Index: Hashable {}

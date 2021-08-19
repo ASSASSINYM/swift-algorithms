@@ -22,7 +22,7 @@ public struct CycledSequence<Base: Collection> {
 }
 
 extension CycledSequence: Sequence {
-  /// The iterator for a `Cycle` sequence.
+  /// The iterator for a `CycledSequence` instance.
   public struct Iterator: IteratorProtocol {
     @usableFromInline
     internal let base: Base
@@ -61,7 +61,7 @@ extension CycledSequence: LazySequenceProtocol
 /// A collection wrapper that repeats the elements of a base collection for a
 /// finite number of times.
 public struct FiniteCycledCollection<Base: Collection> {
-  /// A Product2 instance for iterating the Base collection.
+  /// A `Product2Sequence` instance for iterating the base collection.
   @usableFromInline
   internal let product: Product2Sequence<Range<Int>, Base>
 
@@ -75,7 +75,8 @@ extension FiniteCycledCollection: Collection {
   public typealias Element = Base.Element
 
   public struct Index: Comparable {
-    /// The index corresponding to the Product2 index at this position.
+    /// The index corresponding to the `Product2Sequence` index at this
+    /// position.
     @usableFromInline
     internal let productIndex: Product2Sequence<Range<Int>, Base>.Index
 

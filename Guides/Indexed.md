@@ -21,7 +21,7 @@ for (i, n) in numbers.indexed() {
 
 ## Detailed Design
 
-The `indexed` method returns an `Indexed` type:
+The `indexed` method returns an `IndexedCollection` type:
 
 ```swift
 extension Collection {

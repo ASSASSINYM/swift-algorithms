@@ -127,8 +127,8 @@ base type conforms.
 ### Complexity
 
 Calling `permutations()` is an O(1) operation. Creating the iterator for a
-`Permutations` instance and each call to `Permutations.Iterator.next()` is an
-O(_n_) operation.
+`PermutationsSequence` instance and each call to
+`PermutationsSequence.Iterator.next()` is an O(_n_) operation.
 
 Calling `uniquePermutations()` is an O(_n_) operation, because it preprocesses 
 the collection to find duplicate elements. Creating the iterator for and each 

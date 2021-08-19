@@ -29,7 +29,7 @@ public struct Product2Sequence<Base1: Sequence, Base2: Collection> {
 extension Product2Sequence: Sequence {
   public typealias Element = (Base1.Element, Base2.Element)
   
-  /// The iterator for a `Product2` sequence.
+  /// The iterator for a `Product2Sequence` sequence.
   public struct Iterator: IteratorProtocol {
     @usableFromInline
     internal var i1: Base1.Iterator
@@ -90,7 +90,7 @@ extension Product2Sequence: Sequence {
 }
 
 extension Product2Sequence: Collection where Base1: Collection {
-  /// The index type for a `Product2` collection.
+  /// The index type for a `Product2Sequence` collection.
   public struct Index: Comparable {
     @usableFromInline
     internal var i1: Base1.Index

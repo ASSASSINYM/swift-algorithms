@@ -565,7 +565,7 @@ extension ChunksOfCountCollection {
 }
 
 extension Collection {
-  /// Returns a `ChunkedCollection<Self>` view presenting the elements
+  /// Returns a `ChunksOfCountCollection<Self>` view presenting the elements
   /// in chunks with count of the given count parameter.
   ///
   /// - Parameter count: The size of the chunks. If the count parameter

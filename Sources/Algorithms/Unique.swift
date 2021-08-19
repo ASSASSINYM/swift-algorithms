@@ -27,7 +27,7 @@ public struct UniquedSequence<Base: Sequence, Subject: Hashable> {
 }
 
 extension UniquedSequence: Sequence {
-  /// The iterator for a `Uniqued` sequence.
+  /// The iterator for a `UniquedSequence` instance.
   public struct Iterator: IteratorProtocol {
     @usableFromInline
     internal var base: Base.Iterator

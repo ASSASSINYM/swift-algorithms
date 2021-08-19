@@ -67,7 +67,7 @@ public struct WindowsCollection<Base: Collection> {
 }
 
 extension WindowsCollection: Collection {
-  /// A position in a `Windows` collection.
+  /// A position in a `WindowsCollection` instance.
   public struct Index: Comparable {
     @usableFromInline
     internal var lowerBound: Base.Index

@@ -12,9 +12,6 @@
 /// A collection wrapper that iterates over the indices and elements of a
 /// collection together.
 public struct IndexedCollection<Base: Collection> {
-  /// The element type for an `Indexed` collection.
-  public typealias Element = (index: Base.Index, element: Base.Element)
-  
   /// The base collection.
   @usableFromInline
   internal let base: Base
@@ -26,6 +23,9 @@ public struct IndexedCollection<Base: Collection> {
 }
 
 extension IndexedCollection: Collection {
+  /// The element type for an `IndexedCollection` collection.
+  public typealias Element = (index: Base.Index, element: Base.Element)
+  
   @inlinable
   public var startIndex: Base.Index {
     base.startIndex
