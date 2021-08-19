@@ -319,7 +319,7 @@ extension ExclusiveReductionsSequence: LazySequenceProtocol
   where Base: LazySequenceProtocol {}
 
 extension ExclusiveReductionsSequence: LazyCollectionProtocol
-  where Base: LazyCollectionProtocol {}
+  where Base: LazySequenceProtocol & Collection {}
 
 // MARK: - Inclusive Reductions
 
@@ -537,7 +537,7 @@ extension InclusiveReductionsSequence: LazySequenceProtocol
   where Base: LazySequenceProtocol {}
 
 extension InclusiveReductionsSequence: LazyCollectionProtocol
-  where Base: LazyCollectionProtocol {}
+  where Base: LazySequenceProtocol & Collection {}
 
 // MARK: - ReductionsIndexRepresentation
 

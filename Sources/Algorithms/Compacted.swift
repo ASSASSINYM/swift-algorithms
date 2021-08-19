@@ -9,7 +9,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-/// A `Sequence` that iterates over every non-nil element from the original `Sequence`.
+/// A `Sequence` that iterates over every non-nil element from the original
+/// `Sequence`.
 public struct CompactedSequence<Base: Sequence, Element>: Sequence
   where Base.Element == Element? {
 
@@ -71,7 +72,8 @@ extension Sequence {
   }
 }
 
-/// A `Collection` that iterates over every non-nil element from the original `Collection`.
+/// A `Collection` that iterates over every non-nil element from the original
+/// `Collection`.
 public struct CompactedCollection<Base: Collection, Element>: Collection
   where Base.Element == Element? {
 
@@ -178,4 +180,4 @@ extension CompactedSequence: LazySequenceProtocol
 extension CompactedCollection: LazySequenceProtocol
   where Base: LazySequenceProtocol {}
 extension CompactedCollection: LazyCollectionProtocol
-  where Base: LazyCollectionProtocol {}
+  where Base: LazySequenceProtocol {}

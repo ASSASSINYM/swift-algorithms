@@ -160,7 +160,7 @@ extension FiniteCycledCollection: RandomAccessCollection
   where Base: RandomAccessCollection {}
 
 extension FiniteCycledCollection: LazySequenceProtocol, LazyCollectionProtocol
-  where Base: LazyCollectionProtocol {}
+  where Base: LazySequenceProtocol {}
 
 //===----------------------------------------------------------------------===//
 // cycled()

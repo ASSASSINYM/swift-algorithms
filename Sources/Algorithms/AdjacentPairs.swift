@@ -305,7 +305,7 @@ extension AdjacentPairsCollection: RandomAccessCollection
   where Base: RandomAccessCollection {}
 
 extension AdjacentPairsCollection: LazySequenceProtocol, LazyCollectionProtocol
-  where Base: LazyCollectionProtocol {}
+  where Base: LazySequenceProtocol {}
 
 extension AdjacentPairsCollection.Index: Hashable where Base.Index: Hashable {
   @inlinable

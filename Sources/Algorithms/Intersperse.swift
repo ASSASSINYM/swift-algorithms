@@ -278,7 +278,7 @@ extension InterspersedSequence: LazySequenceProtocol
   where Base: LazySequenceProtocol {}
 
 extension InterspersedSequence: LazyCollectionProtocol
-  where Base: LazyCollectionProtocol {}
+  where Base: LazySequenceProtocol & Collection {}
 
 //===----------------------------------------------------------------------===//
 // InterspersedMap
@@ -596,7 +596,7 @@ extension InterspersedMapSequence.Index: Hashable
 extension InterspersedMapSequence: LazySequenceProtocol
   where Base: LazySequenceProtocol {}
 extension InterspersedMapSequence: LazyCollectionProtocol
-  where Base: LazyCollectionProtocol {}
+  where Base: LazySequenceProtocol & Collection {}
 
 //===----------------------------------------------------------------------===//
 // interspersed(with:)

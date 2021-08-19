@@ -63,7 +63,7 @@ c.elementsEqual(c.chunked(...).joined())
 
 The three methods are added as extension to `Collection`. `chunked(by:)` and
 `chunked(on:)` are eager by default, both with a matching version that return a
-lazy wrapper added to `LazyCollectionProtocol`.
+lazy wrapper added to `LazySequenceProtocol`.
 
 ```swift
 extension Collection {
@@ -78,7 +78,7 @@ extension Collection {
   public func chunks(ofCount count: Int) -> ChunksOfCountCollection<Self>
 }
 
-extension LazyCollectionProtocol {
+extension LazySequenceProtocol where Self: Collection, Elements: Collection {
   public func chunked(
       by belongInSameGroup: @escaping (Element, Element) -> Bool
   ) -> ChunkedByCollection<Elements, Element>

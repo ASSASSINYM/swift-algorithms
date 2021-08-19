@@ -71,7 +71,7 @@ extension IndexedCollection: BidirectionalCollection where Base: BidirectionalCo
 
 extension IndexedCollection: RandomAccessCollection where Base: RandomAccessCollection {}
 extension IndexedCollection: LazySequenceProtocol where Base: LazySequenceProtocol {}
-extension IndexedCollection: LazyCollectionProtocol where Base: LazyCollectionProtocol {}
+extension IndexedCollection: LazyCollectionProtocol where Base: LazySequenceProtocol {}
 
 //===----------------------------------------------------------------------===//
 // indexed()

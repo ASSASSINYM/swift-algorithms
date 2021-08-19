@@ -343,7 +343,7 @@ extension LazySequenceProtocol where Element: Equatable {
 ///     x.split(maxSplits:omittingEmptySubsequences:whereSeparator)
 ///     x.split(separator:maxSplits:omittingEmptySubsequences)
 ///
-///   where `x` conforms to `LazyCollectionProtocol`.
+///   where `x` conforms to `LazySequenceProtocol` and `Collection`.
 public struct SplitCollection<Base: Collection> {
   @usableFromInline
   internal let base: Base
@@ -553,7 +553,7 @@ extension SplitCollection.Index: Hashable {
   }
 }
 
-extension LazyCollectionProtocol {
+extension LazySequenceProtocol where Self: Collection, Elements: Collection {
   /// Lazily returns the longest possible subsequences of the collection, in
   /// order, that don't contain elements satisfying the given predicate.
   ///
@@ -653,8 +653,9 @@ extension LazyCollectionProtocol {
   }
 }
 
-extension LazyCollectionProtocol
-where Element: Equatable {
+extension LazySequenceProtocol
+  where Self: Collection, Elements: Collection, Element: Equatable
+{
   /// Lazily returns the longest possible subsequences of the collection, in
   /// order, around elements equal to the given element.
   ///

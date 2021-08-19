@@ -349,7 +349,13 @@ extension WindowsCollection: BidirectionalCollection where Base: BidirectionalCo
   }
 }
 
-extension WindowsCollection: LazySequenceProtocol where Base: LazySequenceProtocol {}
-extension WindowsCollection: LazyCollectionProtocol where Base: LazyCollectionProtocol {}
-extension WindowsCollection: RandomAccessCollection where Base: RandomAccessCollection {}
+extension WindowsCollection: LazySequenceProtocol
+  where Base: LazySequenceProtocol {}
+
+extension WindowsCollection: LazyCollectionProtocol
+  where Base: LazySequenceProtocol {}
+
+extension WindowsCollection: RandomAccessCollection
+  where Base: RandomAccessCollection {}
+
 extension WindowsCollection.Index: Hashable where Base.Index: Hashable {}

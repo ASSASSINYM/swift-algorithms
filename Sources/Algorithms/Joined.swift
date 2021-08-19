@@ -215,7 +215,7 @@ extension JoinedByCollection: BidirectionalCollection
 extension JoinedByCollection: LazySequenceProtocol
   where Base: LazySequenceProtocol {}
 extension JoinedByCollection: LazyCollectionProtocol
-  where Base: LazyCollectionProtocol {}
+  where Base: LazySequenceProtocol {}
 
 //===----------------------------------------------------------------------===//
 // JoinedByClosureCollection
@@ -323,7 +323,7 @@ extension JoinedByClosureCollection: BidirectionalCollection
 extension JoinedByClosureCollection: LazySequenceProtocol
   where Base: LazySequenceProtocol {}
 extension JoinedByClosureCollection: LazyCollectionProtocol
-  where Base: LazyCollectionProtocol {}
+  where Base: LazySequenceProtocol {}
 
 //===----------------------------------------------------------------------===//
 // Sequence.joined(by:)
@@ -469,10 +469,10 @@ extension Collection where Element: Collection {
 }
 
 //===----------------------------------------------------------------------===//
-// LazyCollectionProtocol.joined(by:)
+// LazySequenceProtocol.joined(by:) where Self: Collection
 //===----------------------------------------------------------------------===//
 
-extension LazyCollectionProtocol where Element: Collection {
+extension LazySequenceProtocol where Self: Collection, Element: Collection {
   /// Returns the concatenation of the elements in this collection of
   /// collections, inserting the separator produced by the closure between each
   /// sequence.

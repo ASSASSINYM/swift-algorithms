@@ -197,7 +197,9 @@ extension ChunkedOnCollection: LazyCollectionProtocol {
   }
 }
 
-extension ChunkedOnCollection: BidirectionalCollection where Base: BidirectionalCollection {
+extension ChunkedOnCollection: BidirectionalCollection
+  where Base: BidirectionalCollection
+{
   public func index(before i: Index) -> Index {
     chunked.index(before: i)
   }
@@ -207,7 +209,7 @@ extension ChunkedOnCollection: BidirectionalCollection where Base: Bidirectional
 // lazy.chunked(by:) / lazy.chunked(on:)
 //===----------------------------------------------------------------------===//
 
-extension LazyCollectionProtocol {
+extension LazySequenceProtocol where Self: Collection, Elements: Collection {
   /// Returns a lazy collection of subsequences of this collection, chunked by
   /// the given predicate.
   ///
@@ -592,4 +594,4 @@ extension ChunksOfCountCollection.Index: Hashable where Base.Index: Hashable {}
 extension ChunksOfCountCollection: LazySequenceProtocol
   where Base: LazySequenceProtocol {}
 extension ChunksOfCountCollection: LazyCollectionProtocol
-  where Base: LazyCollectionProtocol {}
+  where Base: LazySequenceProtocol {}
