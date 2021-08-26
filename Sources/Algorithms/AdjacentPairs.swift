@@ -139,15 +139,6 @@ public struct AdjacentPairsCollection<Base: Collection> {
 }
 
 extension AdjacentPairsCollection {
-  public typealias Iterator = AdjacentPairsSequence<Base>.Iterator
-
-  @inlinable
-  public func makeIterator() -> Iterator {
-    Iterator(base: base.makeIterator())
-  }
-}
-
-extension AdjacentPairsCollection {
   /// A position in an `AdjacentPairsCollection` instance.
   public struct Index: Comparable {
     @usableFromInline
