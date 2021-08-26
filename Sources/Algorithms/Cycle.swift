@@ -60,7 +60,7 @@ extension CycledSequence: LazySequenceProtocol
 
 /// A collection wrapper that repeats the elements of a base collection for a
 /// finite number of times.
-public struct FiniteCycledCollection<Base: Collection> {
+public struct CycledTimesCollection<Base: Collection> {
   /// A `Product2Sequence` instance for iterating the base collection.
   @usableFromInline
   internal let product: Product2Sequence<Range<Int>, Base>
@@ -71,7 +71,7 @@ public struct FiniteCycledCollection<Base: Collection> {
   }
 }
 
-extension FiniteCycledCollection: Collection {
+extension CycledTimesCollection: Collection {
   public typealias Element = Base.Element
 
   public struct Index: Comparable {
@@ -148,7 +148,7 @@ extension FiniteCycledCollection: Collection {
   }
 }
 
-extension FiniteCycledCollection: BidirectionalCollection
+extension CycledTimesCollection: BidirectionalCollection
   where Base: BidirectionalCollection {
   @inlinable
   public func index(before i: Index) -> Index {
@@ -157,10 +157,10 @@ extension FiniteCycledCollection: BidirectionalCollection
   }
 }
 
-extension FiniteCycledCollection: RandomAccessCollection
+extension CycledTimesCollection: RandomAccessCollection
   where Base: RandomAccessCollection {}
 
-extension FiniteCycledCollection: LazySequenceProtocol, LazyCollectionProtocol
+extension CycledTimesCollection: LazySequenceProtocol, LazyCollectionProtocol
   where Base: LazySequenceProtocol {}
 
 //===----------------------------------------------------------------------===//
@@ -216,7 +216,7 @@ extension Collection {
   ///
   /// - Complexity: O(1)
   @inlinable
-  public func cycled(times: Int) -> FiniteCycledCollection<Self> {
-    FiniteCycledCollection(base: self, times: times)
+  public func cycled(times: Int) -> CycledTimesCollection<Self> {
+    CycledTimesCollection(base: self, times: times)
   }
 }

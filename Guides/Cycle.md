@@ -28,7 +28,7 @@ Two new methods are added to collections:
 extension Collection {
     func cycled() -> CycledSequence<Self>
 
-    func cycled(times: Int) -> FiniteCycledCollection<Self>
+    func cycled(times: Int) -> CycledTimesCollection<Self>
 }
 ```
 
@@ -37,7 +37,7 @@ protocol design makes infinitely large types impossible/impractical.
 `CycledSequence` also conforms to `LazySequenceProtocol` when the base type
 conforms.
 
-The `FiniteCycledCollection` type always has `Collection` conformance, with
+The `CycledTimesCollection` type always has `Collection` conformance, with
 `BidirectionalCollection`, `RandomAccessCollection`, and `LazySequenceProtocol` 
 conformance when the base type conforms.
 
