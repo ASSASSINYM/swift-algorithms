@@ -126,30 +126,15 @@ public struct AdjacentPairsCollection<Base: Collection> {
   @usableFromInline
   internal let base: Base
 
-  public let startIndex: Index
+  @usableFromInline
+  internal let secondBaseIndex: Base.Index
 
   @inlinable
   internal init(base: Base) {
     self.base = base
-    
-    // Lazily build the end index, since we can't use the instance
-    // property pre-initialization
-    var endIndex: Index {
-      Index(first: base.endIndex, second: base.endIndex)
-    }
-
-    // Precompute `startIndex` to ensure O(1) behavior.
-    guard !base.isEmpty else {
-      self.startIndex = endIndex
-      return
-    }
-    
-    // If there's only one element (i.e. the second index of base == endIndex)
-    // then this collection should be empty.
-    let secondIndex = base.index(after: base.startIndex)
-    self.startIndex = secondIndex == base.endIndex
-      ? endIndex
-      : Index(first: base.startIndex, second: secondIndex)
+    self.secondBaseIndex = base.isEmpty
+      ? base.endIndex
+      : base.index(after: base.startIndex)
   }
 }
 
@@ -190,6 +175,13 @@ extension AdjacentPairsCollection {
 }
 
 extension AdjacentPairsCollection: Collection {
+  @inlinable
+  public var startIndex: Index {
+    Index(
+      first: secondBaseIndex == base.endIndex ? base.endIndex : base.startIndex,
+      second: secondBaseIndex)
+  }
+  
   @inlinable
   public var endIndex: Index {
     Index(first: base.endIndex, second: base.endIndex)
