@@ -550,6 +550,7 @@ extension InclusiveReductionsSequence: LazyCollectionProtocol
 extension InclusiveReductionsSequence.Index: Hashable
   where Base.Index: Hashable
 {
+  @inlinable
   public func hash(into hasher: inout Hasher) {
     hasher.combine(base)
   }

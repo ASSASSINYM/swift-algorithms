@@ -542,7 +542,10 @@ extension Collection where Element: Hashable {
   ///
   /// - Complexity: O(*n*), where *n* is the number of elements in this
   ///   collection.
-  public func uniquePermutations(ofCount k: Int? = nil) -> UniquePermutationsSequence<Self> {
+  @inlinable
+  public func uniquePermutations(ofCount k: Int? = nil)
+    -> UniquePermutationsSequence<Self>
+  {
     if let k = k {
       return UniquePermutationsSequence(self, k ..< (k + 1))
     } else {
@@ -579,9 +582,10 @@ extension Collection where Element: Hashable {
   ///
   /// - Complexity: O(*n*), where *n* is the number of elements in this
   ///   collection.
-  public func uniquePermutations<R: RangeExpression>(ofCount kRange: R) -> UniquePermutationsSequence<Self>
-    where R.Bound == Int
-  {
+  @inlinable
+  public func uniquePermutations<R: RangeExpression>(
+    ofCount kRange: R
+  ) -> UniquePermutationsSequence<Self> where R.Bound == Int {
     UniquePermutationsSequence(self, kRange)
   }
 }

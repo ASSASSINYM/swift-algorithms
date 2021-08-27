@@ -548,6 +548,7 @@ extension SplitCollection: LazyCollectionProtocol {
 }
 
 extension SplitCollection.Index: Hashable {
+  @inlinable
   public func hash(into hasher: inout Hasher) {
     hasher.combine(sequenceLength)
   }

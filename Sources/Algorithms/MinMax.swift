@@ -428,6 +428,7 @@ extension Sequence {
   ///   method returns `nil`.
   ///
   /// - Complexity: O(*n*), where *n* is the length of the sequence.
+  @inlinable
   public func minAndMax(
     by areInIncreasingOrder: (Element, Element) throws -> Bool
   ) rethrows -> (min: Element, max: Element)? {

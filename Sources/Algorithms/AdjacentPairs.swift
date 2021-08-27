@@ -154,7 +154,7 @@ extension AdjacentPairsCollection {
     }
 
     @inlinable
-    public static func ==(lhs: Index, rhs: Index) -> Bool {
+    public static func == (lhs: Index, rhs: Index) -> Bool {
       lhs.first == rhs.first
     }
     

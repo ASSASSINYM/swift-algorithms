@@ -167,7 +167,8 @@ extension Collection {
   /// original `Collection`.
   @inlinable
   public func compacted<Unwrapped>() -> CompactedCollection<Self, Unwrapped>
-    where Element == Unwrapped? {
+    where Element == Unwrapped?
+  {
     CompactedCollection(base: self)
   }
 }

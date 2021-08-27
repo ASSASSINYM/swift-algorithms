@@ -200,6 +200,7 @@ extension ChunkedOnCollection: LazyCollectionProtocol {
 extension ChunkedOnCollection: BidirectionalCollection
   where Base: BidirectionalCollection
 {
+  @inlinable
   public func index(before i: Index) -> Index {
     chunked.index(before: i)
   }
@@ -319,7 +320,6 @@ extension Collection {
 /// * `c.lazy.chunks(ofCount: 3).map(f)` maps lazily and returns a
 ///   `LazyMapCollection`
 public struct ChunksOfCountCollection<Base: Collection> {
-  
   public typealias Element = Base.SubSequence
   
   @usableFromInline
@@ -365,6 +365,7 @@ extension ChunksOfCountCollection: Collection {
   public var startIndex: Index {
     Index(_baseRange: base.startIndex..<endOfFirstChunk)
   }
+  
   @inlinable
   public var endIndex: Index {
     Index(_baseRange: base.endIndex..<base.endIndex)
@@ -411,7 +412,7 @@ where Base: RandomAccessCollection {
     
     var offset = chunkCount
     if i.baseRange.lowerBound == base.endIndex {
-      let remainder = base.count%chunkCount
+      let remainder = base.count % chunkCount
       if remainder != 0 {
         offset = remainder
       }

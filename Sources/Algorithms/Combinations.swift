@@ -180,6 +180,7 @@ extension CombinationsSequence: Sequence {
     }
   }
   
+  @inlinable
   public func makeIterator() -> Iterator {
     Iterator(self)
   }
