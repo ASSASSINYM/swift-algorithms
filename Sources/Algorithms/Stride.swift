@@ -63,7 +63,7 @@ public struct StridingSequence<Base: Sequence>: Sequence {
   
   @inlinable
   internal init(base: Base, stride: Int) {
-    precondition(stride > 0, "striding must be greater than zero")
+    precondition(stride > 0, "Stride must be greater than zero")
     self.base = base
     self.stride = stride
   }

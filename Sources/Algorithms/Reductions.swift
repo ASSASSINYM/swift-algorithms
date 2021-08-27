@@ -28,9 +28,9 @@ extension LazySequenceProtocol {
   /// - Parameters:
   ///   - initial: The value to use as the initial value.
   ///   - transform: A closure that combines the previously reduced result and
-  ///   the next element in the receiving sequence.
+  ///     the next element in the receiving sequence.
   /// - Returns: A sequence of the initial value followed by the reduced
-  /// elements.
+  ///   elements.
   ///
   /// - Complexity: O(1)
   @inlinable
@@ -59,7 +59,7 @@ extension LazySequenceProtocol {
   /// - Parameters:
   ///   - initial: The value to use as the initial value.
   ///   - transform: A closure that combines the previously reduced result and
-  ///   the next element in the receiving sequence.
+  ///     the next element in the receiving sequence.
   /// - Returns: A sequence of the initial value followed by the reduced
   /// elements.
   ///
@@ -69,7 +69,10 @@ extension LazySequenceProtocol {
     into initial: Result,
     _ transform: @escaping (inout Result, Element) -> Void
   ) -> ExclusiveReductionsSequence<Result, Self> {
-    ExclusiveReductionsSequence(base: self, initial: initial, transform: transform)
+    ExclusiveReductionsSequence(
+      base: self,
+      initial: initial,
+      transform: transform)
   }
 }
 
@@ -104,7 +107,7 @@ extension Sequence {
   /// - Parameters:
   ///   - initial: The value to use as the initial value.
   ///   - transform: A closure that combines the previously reduced result and
-  ///   the next element in the receiving sequence.
+  ///     the next element in the receiving sequence.
   /// - Returns: An array of the initial value followed by the reduced elements.
   ///
   /// - Complexity: O(_n_), where _n_ is the length of the sequence.
@@ -148,7 +151,7 @@ extension Sequence {
   /// - Parameters:
   ///   - initial: The value to use as the initial value.
   ///   - transform: A closure that combines the previously reduced result and
-  ///   the next element in the receiving sequence.
+  ///     the next element in the receiving sequence.
   /// - Returns: An array of the initial value followed by the reduced elements.
   ///
   /// - Complexity: O(_n_), where _n_ is the length of the sequence.
