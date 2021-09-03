@@ -163,34 +163,79 @@ func XCTAssertEqualCollections<C1: Collection, C2: Collection>(
   }
 }
 
-/// Tests that all index traversal methods behave as expected.
-///
-/// Verifies the correctness of the implementations of `startIndex`, `endIndex`,
-/// `indices`, `count`, `isEmpty`, `index(before:)`, `index(after:)`,
-/// `index(_:offsetBy:)`, `index(_:offsetBy:limitedBy:)`, and
-/// `distance(from:to:)` by calling them with just about all possible input
-/// combinations. When provided, the `indices` function is used to to test the
-/// collection methods against.
-///
-/// - Parameters:
-///   - collections: The collections to be validated.
-///   - indices: A closure that returns the expected indices of the given
-///     collection, including its `endIndex`, in ascending order. Only use this
-///     parameter if you are able to compute the indices of the collection
-///     independently of the `Collection` conformance, e.g. by using the
-///     contents of the collection directly.
-///
-/// - Complexity: O(*n*^3) where *n* is the length of the collection per
-///   collection if the collection conforms to `RandomAccesCollection`,
-///   otherwise O(*n*^4).
-func validateIndexTraversals<C>(
-  _ collections: C...,
-  indices: ((C) -> [C.Index])? = nil,
-  file: StaticString = #file, line: UInt = #line
-) where C: BidirectionalCollection {
-  for c in collections {
-    let indicesIncludingEnd = indices?(c) ?? (c.indices + [c.endIndex])
+struct IndexValidator<C: Collection> {
+  let testRandomAccess = true
+  let indicesIncludingEnd: (C) -> [C.Index]
+  
+  /// Creates a new instance of an index validator that can verify that indices
+  /// of a collection behave correctly and consistently.
+  ///
+  /// Usage:
+  ///
+  ///     let validator = IndexValidator<ReversedCollection<String>>()
+  ///     validator.test("abc".reversed())
+  ///     validator.text("xyz".reversed(), expectedCount: 3)
+  ///
+  /// - Parameters:
+  ///   - testRandomAccess: If `true`, also tests the correctness of the methods
+  ///     `index(_:offsetBy:)`, `index(_:offsetBy:limitedBy:)`, and
+  ///     `distance(from:to:)`. Only useful if the collection overrides these
+  ///     methods. Defaults to `true`.
+  ///   - indicesIncludingEnd: A closure that returns the expected indices of
+  ///     the given collection, including its `endIndex`, in ascending order.
+  ///     Only use this parameter if you are able to compute the indices of the
+  ///     collection independently of the `Collection` conformance, e.g. by
+  ///     using the contents of the collection directly.
+  init(
+    testRandomAccess: Bool = true,
+    indicesIncludingEnd: @escaping (C) -> [C.Index] = { $0.indices + [$0.endIndex] }
+  ) {
+    self.indicesIncludingEnd = indicesIncludingEnd
+  }
+}
+
+extension IndexValidator {
+  /// Tests that all index traversal methods behave as expected.
+  ///
+  /// Verifies the correctness of the implementations of `startIndex`,
+  /// `endIndex`, `indices`, `count`, `isEmpty`, `index(before:)`,
+  /// `index(after:)`, `index(_:offsetBy:)`, `index(_:offsetBy:limitedBy:)`, and
+  /// `distance(from:to:)` by calling them with just about all possible input
+  /// combinations.
+  ///
+  /// - Parameters:
+  ///   - collection: The collection to be validated.
+  ///   - expectedCount:
+  ///
+  /// - Complexity: O(*n*^3) where *n* is the length of the collection if the
+  ///   collection conforms to `RandomAccesCollection`, otherwise O(*n*^4).
+  func test(
+    _ collection: C,
+    expectedCount: Int? = nil,
+    file: StaticString = #file, line: UInt = #line
+  ) {
+    let indicesIncludingEnd = indicesIncludingEnd(collection)
     let count = indicesIncludingEnd.count - 1
+    
+    testForward(
+      collection,
+      count: count,
+      indicesIncludingEnd: indicesIncludingEnd,
+      expectedCount: expectedCount,
+      file: file, line: line)
+  }
+  
+  private func testForward(
+    _ c: C,
+    count: Int,
+    indicesIncludingEnd: [C.Index],
+    expectedCount: Int? = nil,
+    file: StaticString, line: UInt
+  ) {
+    if let expectedCount = expectedCount {
+      XCTAssertEqual(
+        expectedCount, count, "Count mismatch", file: file, line: line)
+    }
     
     XCTAssertEqual(
       c.count, count,
@@ -220,22 +265,6 @@ func validateIndexTraversals<C>(
           """
           `startIndex` incremented \(offset) times does not equal index at \
           offset \(offset)
-          """,
-          file: file, line: line)
-      }
-    }
-    
-    // `index(before:)`
-    do {
-      var index = c.endIndex
-
-      for (offset, expected) in indicesIncludingEnd.enumerated().dropLast().reversed() {
-        c.formIndex(before: &index)
-        XCTAssertEqual(
-          index, expected,
-          """
-          `endIndex` decremented \(count - offset) times does not equal index \
-          at offset \(offset)
           """,
           file: file, line: line)
       }
@@ -275,79 +304,202 @@ func validateIndexTraversals<C>(
       }
     }
     
-    // `index(_:offsetBy:)` and `distance(from:to:)`
-    for (startOffset, start) in indicesIncludingEnd.enumerated() {
-      for (endOffset, end) in indicesIncludingEnd.enumerated() {
-        let distance = endOffset - startOffset
-        
+    if testRandomAccess {
+      // `index(_:offsetBy:)` and `distance(from:to:)`
+      for (startOffset, start) in indicesIncludingEnd.enumerated() {
+        for (endOffset, end) in indicesIncludingEnd.enumerated() {
+          let distance = endOffset - startOffset
+          
+          // only do forward offsets
+          guard distance >= 0 else { continue }
+          
+          XCTAssertEqual(
+            c.index(start, offsetBy: distance), end,
+            """
+            Index at offset \(startOffset) offset by \(distance) does not \
+            equal index at offset \(endOffset)
+            """,
+            file: file, line: line)
+          XCTAssertEqual(
+            c.distance(from: start, to: end), distance,
+            """
+            Distance from index at offset \(startOffset) to index at offset \
+            \(endOffset) does not equal \(distance)
+            """,
+            file: file, line: line)
+        }
+      }
+      
+      // `index(_:offsetBy:limitedBy:)`
+      for (startOffset, start) in indicesIncludingEnd.enumerated() {
+        for (limitOffset, limit) in indicesIncludingEnd.enumerated() {
+          // verifies that the target index corresponding to each offset in
+          // `range` can or cannot be reached from `start` using
+          // `chain.index(start, offsetBy: _, limitedBy: limit)`, depending on
+          // the value of `pastLimit`
+          func checkTargetRange(_ range: ClosedRange<Int>, pastLimit: Bool) {
+            for targetOffset in range {
+              let distance = targetOffset - startOffset
+              
+              // only do forward offsets
+              guard distance >= 0 else { continue }
+              
+              let end = c.index(start, offsetBy: distance, limitedBy: limit)
+              
+              if pastLimit {
+                XCTAssertNil(
+                  end,
+                  """
+                  Index at offset \(startOffset) offset by \(distance) limited \
+                  by index at offset \(limitOffset) does not equal `nil`
+                  """,
+                  file: file, line: line)
+              } else {
+                XCTAssertEqual(
+                  end, indicesIncludingEnd[targetOffset],
+                  """
+                  Index at offset \(startOffset) offset by \(distance) limited \
+                  by index at offset \(limitOffset) does not equal index at \
+                  offset \(targetOffset)
+                  """,
+                  file: file, line: line)
+              }
+            }
+          }
+          
+          if limit >= start {
+            // the limit has an effect
+            checkTargetRange(startOffset...limitOffset, pastLimit: false)
+            checkTargetRange((limitOffset + 1)...(count + 1), pastLimit: true)
+          } else {
+            // the limit has no effect
+            checkTargetRange(startOffset...count, pastLimit: false)
+          }
+        }
+      }
+    }
+  }
+}
+
+extension IndexValidator where C: BidirectionalCollection {
+  func test(
+    _ c: C, expectedCount: Int? = nil,
+    file: StaticString = #file, line: UInt = #line
+  ) {
+    let indicesIncludingEnd = indicesIncludingEnd(c)
+    let count = indicesIncludingEnd.count - 1
+    
+    testForward(
+      c,
+      count: count,
+      indicesIncludingEnd: indicesIncludingEnd,
+      expectedCount: expectedCount,
+      file: file, line: line)
+    testBackward(
+      c,
+      count: count,
+      indicesIncludingEnd: indicesIncludingEnd,
+      file: file, line: line)
+  }
+  
+  private func testBackward(
+    _ c: C,
+    count: Int,
+    indicesIncludingEnd: [C.Index],
+    file: StaticString, line: UInt
+  ) {
+    // `index(before:)`
+    do {
+      var index = c.endIndex
+
+      for (offset, expected) in indicesIncludingEnd.enumerated().dropLast().reversed() {
+        c.formIndex(before: &index)
         XCTAssertEqual(
-          c.index(start, offsetBy: distance), end,
+          index, expected,
           """
-          Index at offset \(startOffset) offset by \(distance) does not equal \
-          index at offset \(endOffset)
-          """,
-          file: file, line: line)
-        XCTAssertEqual(
-          c.distance(from: start, to: end), distance,
-          """
-          Distance from index at offset \(startOffset) to index at offset \
-          \(endOffset) does not equal \(distance)
+          `endIndex` decremented \(count - offset) times does not equal index \
+          at offset \(offset)
           """,
           file: file, line: line)
       }
     }
     
-    // `index(_:offsetBy:limitedBy:)`
-    for (startOffset, start) in indicesIncludingEnd.enumerated() {
-      for (limitOffset, limit) in indicesIncludingEnd.enumerated() {
-        // verifies that the target index corresponding to each offset in
-        // `range` can or cannot be reached from `start` using
-        // `chain.index(start, offsetBy: _, limitedBy: limit)`, depending on the
-        // value of `pastLimit`
-        func checkTargetRange(_ range: ClosedRange<Int>, pastLimit: Bool) {
-          for targetOffset in range {
-            let distance = targetOffset - startOffset
-            let end = c.index(start, offsetBy: distance, limitedBy: limit)
-            
-            if pastLimit {
-              XCTAssertNil(
-                end,
-                """
-                Index at offset \(startOffset) offset by \(distance) limited \
-                by index at offset \(limitOffset) does not equal `nil`
-                """,
-                file: file, line: line)
-            } else {
-              XCTAssertEqual(
-                end, indicesIncludingEnd[targetOffset],
-                """
-                Index at offset \(startOffset) offset by \(distance) limited \
-                by index at offset \(limitOffset) does not equal index at \
-                offset \(targetOffset)
-                """,
-                file: file, line: line)
+    if testRandomAccess {
+      // duplicated from the more general `test` method because passing a
+      // negative offset in a generic context where the collection is only known
+      // to be a `Collection` crashes the program, regardless of whether or not
+      // the underlying collection is actually a `BidirectionalCollection`
+      
+      // `index(_:offsetBy:)` and `distance(from:to:)`
+      for (startOffset, start) in indicesIncludingEnd.enumerated() {
+        for (endOffset, end) in indicesIncludingEnd.enumerated() {
+          let distance = endOffset - startOffset
+          
+          // only do backward offsets
+          guard distance < 0 else { continue }
+          
+          XCTAssertEqual(
+            c.index(start, offsetBy: distance), end,
+            """
+            Index at offset \(startOffset) offset by \(distance) does not \
+            equal index at offset \(endOffset)
+            """,
+            file: file, line: line)
+          XCTAssertEqual(
+            c.distance(from: start, to: end), distance,
+            """
+            Distance from index at offset \(startOffset) to index at offset \
+            \(endOffset) does not equal \(distance)
+            """,
+            file: file, line: line)
+        }
+      }
+      
+      // `index(_:offsetBy:limitedBy:)`
+      for (startOffset, start) in indicesIncludingEnd.enumerated() {
+        for (limitOffset, limit) in indicesIncludingEnd.enumerated() {
+          // verifies that the target index corresponding to each offset in
+          // `range` can or cannot be reached from `start` using
+          // `chain.index(start, offsetBy: _, limitedBy: limit)`, depending on
+          // the value of `pastLimit`
+          func checkTargetRange(_ range: ClosedRange<Int>, pastLimit: Bool) {
+            for targetOffset in range {
+              let distance = targetOffset - startOffset
+              
+              // only do backward offsets
+              guard distance < 0 else { continue }
+              
+              let end = c.index(start, offsetBy: distance, limitedBy: limit)
+              
+              if pastLimit {
+                XCTAssertNil(
+                  end,
+                  """
+                  Index at offset \(startOffset) offset by \(distance) limited \
+                  by index at offset \(limitOffset) does not equal `nil`
+                  """,
+                  file: file, line: line)
+              } else {
+                XCTAssertEqual(
+                  end, indicesIncludingEnd[targetOffset],
+                  """
+                  Index at offset \(startOffset) offset by \(distance) limited \
+                  by index at offset \(limitOffset) does not equal index at \
+                  offset \(targetOffset)
+                  """,
+                  file: file, line: line)
+              }
             }
           }
-        }
-        
-        // forward offsets
-        if limit >= start {
-          // the limit has an effect
-          checkTargetRange(startOffset...limitOffset, pastLimit: false)
-          checkTargetRange((limitOffset + 1)...(count + 1), pastLimit: true)
-        } else {
-          // the limit has no effect
-          checkTargetRange(startOffset...count, pastLimit: false)
-        }
-        
-        // backward offsets
-        if limit <= start {
-          // the limit has an effect
-          checkTargetRange(limitOffset...startOffset, pastLimit: false)
-          checkTargetRange(-1...(limitOffset - 1), pastLimit: true)
-        } else {
-          // the limit has no effect
-          checkTargetRange(0...startOffset, pastLimit: false)
+          
+          if limit <= start {
+            // the limit has an effect
+            checkTargetRange(limitOffset...startOffset, pastLimit: false)
+            checkTargetRange(-1...(limitOffset - 1), pastLimit: true)
+          } else {
+            // the limit has no effect
+            checkTargetRange(0...startOffset, pastLimit: false)
+          }
         }
       }
     }
