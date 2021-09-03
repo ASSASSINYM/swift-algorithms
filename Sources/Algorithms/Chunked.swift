@@ -47,7 +47,7 @@ public struct ChunkedByCollection<Base: Collection, Subject> {
   }
 }
 
-extension ChunkedByCollection: LazyCollectionProtocol {
+extension ChunkedByCollection: Collection {
   /// A position in a chunked collection.
   public struct Index: Comparable {
     /// The range corresponding to the chunk at this position.
@@ -139,6 +139,8 @@ extension ChunkedByCollection: BidirectionalCollection
   }
 }
 
+extension ChunkedByCollection: LazyCollectionProtocol {}
+
 @available(*, deprecated, renamed: "ChunkedByCollection")
 public typealias LazyChunked<Base: Collection, Subject>
   = ChunkedByCollection<Base, Subject>
@@ -171,7 +173,7 @@ public struct ChunkedOnCollection<Base: Collection, Subject: Equatable> {
   }
 }
 
-extension ChunkedOnCollection: LazyCollectionProtocol {
+extension ChunkedOnCollection: Collection {
   public typealias Index = ChunkedByCollection<Base, Subject>.Index
   
   @inlinable
@@ -205,6 +207,8 @@ extension ChunkedOnCollection: BidirectionalCollection
     chunked.index(before: i)
   }
 }
+
+extension ChunkedOnCollection: LazyCollectionProtocol {}
 
 //===----------------------------------------------------------------------===//
 // lazy.chunked(by:) / lazy.chunked(on:)

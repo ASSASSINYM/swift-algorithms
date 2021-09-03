@@ -53,8 +53,7 @@ extension Collection {
 }
 
 /// A wrapper that strides over a base sequence.
-public struct StridingSequence<Base: Sequence>: Sequence {
-  
+public struct StridingSequence<Base: Sequence> {
   @usableFromInline
   internal let base: Base
   
@@ -70,6 +69,13 @@ public struct StridingSequence<Base: Sequence>: Sequence {
 }
 
 extension StridingSequence {
+  @inlinable
+  public func striding(by step: Int) -> Self {
+    Self(base: base, stride: stride * step)
+  }
+}
+
+extension StridingSequence: Sequence {
   /// An iterator over a `StridingSequence` instance.
   public struct Iterator: IteratorProtocol {
     @usableFromInline
@@ -103,13 +109,6 @@ extension StridingSequence {
   @inlinable
   public func makeIterator() -> Iterator {
     Iterator(iterator: base.makeIterator(), stride: stride)
-  }
-}
-
-extension StridingSequence {
-  @inlinable
-  public func striding(by step: Int) -> Self {
-    Self(base: base, stride: stride * step)
   }
 }
 

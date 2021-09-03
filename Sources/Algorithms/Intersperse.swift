@@ -593,10 +593,9 @@ extension InterspersedMapSequence.Index: Hashable
   }
 }
 
-extension InterspersedMapSequence: LazySequenceProtocol
-  where Base: LazySequenceProtocol {}
+extension InterspersedMapSequence: LazySequenceProtocol {}
 extension InterspersedMapSequence: LazyCollectionProtocol
-  where Base: LazySequenceProtocol & Collection {}
+  where Base: Collection {}
 
 //===----------------------------------------------------------------------===//
 // interspersed(with:)
@@ -632,13 +631,15 @@ extension Sequence {
   ///
   /// - Complexity: O(1)
   @inlinable
-  public func interspersed(with separator: Element) -> InterspersedSequence<Self> {
+  public func interspersed(
+    with separator: Element
+  ) -> InterspersedSequence<Self> {
     InterspersedSequence(base: self, separator: separator)
   }
 }
 
 //===----------------------------------------------------------------------===//
-// lazy.interspersed(_:with:)
+// lazy.interspersedMap(_:with:)
 //===----------------------------------------------------------------------===//
 
 extension LazySequenceProtocol {
@@ -659,7 +660,10 @@ extension LazySequenceProtocol {
   internal func interspersedMap<Result>(
     _ transform: @escaping (Element) -> Result,
     with separator: @escaping (Element, Element) -> Result
-  ) -> InterspersedMapSequence<Self, Result> {
-    InterspersedMapSequence(base: self, transform: transform, separator: separator)
+  ) -> InterspersedMapSequence<Elements, Result> {
+    InterspersedMapSequence(
+      base: elements,
+      transform: transform,
+      separator: separator)
   }
 }

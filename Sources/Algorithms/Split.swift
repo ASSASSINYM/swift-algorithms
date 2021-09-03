@@ -48,7 +48,7 @@ public struct SplitSequence<Base: Sequence> {
   }
 }
 
-extension SplitSequence {
+extension SplitSequence: Sequence {
   public struct Iterator {
     public typealias Element = [Base.Element]
 
@@ -84,6 +84,16 @@ extension SplitSequence {
       self.maxSplits = maxSplits
       self.omittingEmptySubsequences = omittingEmptySubsequences
     }
+  }
+  
+  @inlinable
+  public func makeIterator() -> Iterator {
+    return Iterator(
+      base: base.makeIterator(),
+      whereSeparator: self.isSeparator,
+      maxSplits: self.maxSplits,
+      omittingEmptySubsequences: self.omittingEmptySubsequences
+    )
   }
 }
 
@@ -128,17 +138,7 @@ extension SplitSequence.Iterator: IteratorProtocol {
   }
 }
 
-extension SplitSequence: LazySequenceProtocol {
-  @inlinable
-  public func makeIterator() -> Iterator {
-    return Iterator(
-      base: base.makeIterator(),
-      whereSeparator: self.isSeparator,
-      maxSplits: self.maxSplits,
-      omittingEmptySubsequences: self.omittingEmptySubsequences
-    )
-  }
-}
+extension SplitSequence: LazySequenceProtocol {}
 
 extension LazySequenceProtocol {
   /// Lazily returns the longest possible subsequences of the sequence, in
@@ -398,7 +398,7 @@ public struct SplitCollection<Base: Collection> {
   }
 }
 
-extension SplitCollection: LazyCollectionProtocol {
+extension SplitCollection: Collection {
   /// Position of a subsequence in a split collection.
   public struct Index: Comparable {
     /// The range corresponding to the subsequence at this position.
@@ -553,6 +553,8 @@ extension SplitCollection.Index: Hashable {
     hasher.combine(sequenceLength)
   }
 }
+
+extension SplitCollection: LazyCollectionProtocol {}
 
 extension LazySequenceProtocol where Self: Collection, Elements: Collection {
   /// Lazily returns the longest possible subsequences of the collection, in

@@ -263,7 +263,8 @@ extension PermutationsSequence: Sequence {
   }
 }
 
-extension PermutationsSequence: LazySequenceProtocol where Base: LazySequenceProtocol {}
+extension PermutationsSequence: LazySequenceProtocol
+  where Base: LazySequenceProtocol {}
 
 //===----------------------------------------------------------------------===//
 // permutations(ofCount:)

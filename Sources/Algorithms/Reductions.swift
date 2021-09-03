@@ -37,7 +37,7 @@ extension LazySequenceProtocol {
   public func reductions<Result>(
     _ initial: Result,
     _ transform: @escaping (Result, Element) -> Result
-  ) -> ExclusiveReductionsSequence<Result, Self> {
+  ) -> ExclusiveReductionsSequence<Elements, Result> {
     return reductions(into: initial) { result, element in
       result = transform(result, element)
     }
@@ -68,9 +68,9 @@ extension LazySequenceProtocol {
   public func reductions<Result>(
     into initial: Result,
     _ transform: @escaping (inout Result, Element) -> Void
-  ) -> ExclusiveReductionsSequence<Result, Self> {
+  ) -> ExclusiveReductionsSequence<Elements, Result> {
     ExclusiveReductionsSequence(
-      base: self,
+      base: elements,
       initial: initial,
       transform: transform)
   }
@@ -177,7 +177,7 @@ extension Sequence {
 
 /// A sequence of applying a transform to the element of a sequence and the
 /// previously transformed result.
-public struct ExclusiveReductionsSequence<Result, Base: Sequence> {
+public struct ExclusiveReductionsSequence<Base: Sequence, Result> {
   @usableFromInline
   internal let base: Base
 
@@ -331,11 +331,10 @@ extension ExclusiveReductionsSequence: Collection where Base: Collection {
   }
 }
 
-extension ExclusiveReductionsSequence: LazySequenceProtocol
-  where Base: LazySequenceProtocol {}
+extension ExclusiveReductionsSequence: LazySequenceProtocol {}
 
 extension ExclusiveReductionsSequence: LazyCollectionProtocol
-  where Base: LazySequenceProtocol & Collection {}
+  where Base: Collection {}
 
 extension ExclusiveReductionsSequence.Index: Hashable
   where Base.Index: Hashable
@@ -375,8 +374,8 @@ extension LazySequenceProtocol {
   @inlinable
   public func reductions(
     _ transform: @escaping (Element, Element) -> Element
-  ) -> InclusiveReductionsSequence<Self> {
-    InclusiveReductionsSequence(base: self, transform: transform)
+  ) -> InclusiveReductionsSequence<Elements> {
+    InclusiveReductionsSequence(base: elements, transform: transform)
   }
 }
 
@@ -544,11 +543,10 @@ extension InclusiveReductionsSequence: Collection where Base: Collection {
   }
 }
 
-extension InclusiveReductionsSequence: LazySequenceProtocol
-  where Base: LazySequenceProtocol {}
+extension InclusiveReductionsSequence: LazySequenceProtocol {}
 
 extension InclusiveReductionsSequence: LazyCollectionProtocol
-  where Base: LazySequenceProtocol & Collection {}
+  where Base: Collection {}
 
 extension InclusiveReductionsSequence.Index: Hashable
   where Base.Index: Hashable
@@ -567,7 +565,7 @@ extension LazySequenceProtocol {
   public func scan<Result>(
     _ initial: Result,
     _ transform: @escaping (Result, Element) -> Result
-  ) -> ExclusiveReductionsSequence<Result, Self> {
+  ) -> ExclusiveReductionsSequence<Elements, Result> {
     reductions(initial, transform)
   }
 
@@ -576,7 +574,7 @@ extension LazySequenceProtocol {
   public func scan<Result>(
     into initial: Result,
     _ transform: @escaping (inout Result, Element) -> Void
-  ) -> ExclusiveReductionsSequence<Result, Self> {
+  ) -> ExclusiveReductionsSequence<Elements, Result> {
     reductions(into: initial, transform)
   }
 }
@@ -606,7 +604,7 @@ extension LazySequenceProtocol {
   @inlinable
   public func scan(
     _ transform: @escaping (Element, Element) -> Element
-  ) -> InclusiveReductionsSequence<Self> {
+  ) -> InclusiveReductionsSequence<Elements> {
     reductions(transform)
   }
 }
