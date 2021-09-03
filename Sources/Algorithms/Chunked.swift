@@ -595,8 +595,5 @@ extension Collection {
 
 extension ChunksOfCountCollection.Index: Hashable where Base.Index: Hashable {}
 
-// Lazy conditional conformance.
-extension ChunksOfCountCollection: LazySequenceProtocol
-  where Base: LazySequenceProtocol {}
-extension ChunksOfCountCollection: LazyCollectionProtocol
+extension ChunksOfCountCollection: LazySequenceProtocol, LazyCollectionProtocol
   where Base: LazySequenceProtocol {}

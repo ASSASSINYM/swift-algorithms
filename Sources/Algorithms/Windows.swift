@@ -331,7 +331,9 @@ extension WindowsCollection: Collection {
   }
 }
 
-extension WindowsCollection: BidirectionalCollection where Base: BidirectionalCollection {
+extension WindowsCollection: BidirectionalCollection
+  where Base: BidirectionalCollection
+{
   @inlinable
   public func index(before index: Index) -> Index {
     precondition(index != startIndex, "Incrementing past start index")
@@ -349,13 +351,10 @@ extension WindowsCollection: BidirectionalCollection where Base: BidirectionalCo
   }
 }
 
-extension WindowsCollection: LazySequenceProtocol
-  where Base: LazySequenceProtocol {}
-
-extension WindowsCollection: LazyCollectionProtocol
-  where Base: LazySequenceProtocol {}
-
 extension WindowsCollection: RandomAccessCollection
   where Base: RandomAccessCollection {}
+
+extension WindowsCollection: LazySequenceProtocol, LazyCollectionProtocol
+  where Base: LazySequenceProtocol {}
 
 extension WindowsCollection.Index: Hashable where Base.Index: Hashable {}

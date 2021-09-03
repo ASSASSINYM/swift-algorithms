@@ -180,7 +180,5 @@ extension Collection {
 extension CompactedSequence: LazySequenceProtocol
   where Base: LazySequenceProtocol {}
 
-extension CompactedCollection: LazySequenceProtocol
-  where Base: LazySequenceProtocol {}
-extension CompactedCollection: LazyCollectionProtocol
+extension CompactedCollection: LazySequenceProtocol, LazyCollectionProtocol
   where Base: LazySequenceProtocol {}

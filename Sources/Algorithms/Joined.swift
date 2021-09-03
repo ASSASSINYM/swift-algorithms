@@ -211,9 +211,7 @@ extension JoinedByCollection: BidirectionalCollection
   }
 }
 
-extension JoinedByCollection: LazySequenceProtocol
-  where Base: LazySequenceProtocol {}
-extension JoinedByCollection: LazyCollectionProtocol
+extension JoinedByCollection: LazySequenceProtocol, LazyCollectionProtocol
   where Base: LazySequenceProtocol {}
 
 //===----------------------------------------------------------------------===//

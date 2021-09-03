@@ -294,9 +294,7 @@ extension FlattenCollection: BidirectionalCollection
   }
 }
 
-extension FlattenCollection: LazySequenceProtocol
-  where Base: LazySequenceProtocol, Base.Element: LazySequenceProtocol {}
-extension FlattenCollection: LazyCollectionProtocol
+extension FlattenCollection: LazySequenceProtocol, LazyCollectionProtocol
   where Base: LazySequenceProtocol, Base.Element: LazySequenceProtocol {}
 
 //===----------------------------------------------------------------------===//
